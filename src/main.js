@@ -1,22 +1,46 @@
 
+let matches = [];
+
+function handleClickMatch(match) {
+    console.log('clicked', match);
+}
+
 function loaded()
 {
     let area = document.getElementById('area');
     let rect = area.getBoundingClientRect();
 
-    for (let n = 0; n < 10; n++) {
-        let x = Math.random() * rect.width;
-        let y = Math.random() * rect.height;
-        let match = document.createElement('img');
-        if (n % 2 == 0)
-            match.src = 'match.svg';
-        else
-            match.src = 'match-burning.svg';
+    window.addEventListener('resize', resize);
 
-        match.style.top = y + 'px';
-        match.style.left = x + 'px';
+    for (let n = 0; n < 10; n++)
+    {
+        matches.push({
+            x: Math.random()*0.9 + 0.05,
+            y: Math.random()*0.85 + 0.05,
+            element: document.createElement('img'),
+        });
 
-        area.appendChild(match);
+        (function(match) {
+            match.element.addEventListener('click', function() {
+                handleClickMatch(match);
+            });
+        })(matches[n]);
     }
+    resize();
+}
 
+function resize()
+{
+    let area = document.getElementById('area');
+    let rect = area.getBoundingClientRect();
+
+    for (let n = 0; n < matches.length; n++)
+    {
+        let match = matches[n];
+        match.element.src = 'match.svg';
+        match.element.style.left = match.x*rect.width + 'px';
+        match.element.style.top = match.y*rect.height + 'px';
+
+        area.appendChild(match.element);
+    }
 }

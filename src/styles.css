@@ -1,7 +1,10 @@
+
 #area
 {
-    width: 500px;
-    height: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95vmin;
+    height: 95vmin;
     border: solid 1px;
     position: relative;
     background: lightgray;
@@ -10,8 +13,8 @@
 #area > img {
     padding: 0.25em;
     position: absolute;
-    width: auto;
-    height: 5em;
+    width: 1.25vw;
+    height: auto;
 }
 
 #area > img:hover {
