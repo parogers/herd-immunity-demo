@@ -29,20 +29,20 @@
 
 .match > img.flame
 {
+    position: relative;
+    left: -50%;
+    top: -160%;
+    width: 200%;
+    height: auto;
     transition: transform 200ms ease-out, opacity 100ms;
     transform: scale(0);
     opacity: 0;
+    z-index: 5;
 }
 
 .match.lit > img.flame
 {
     opacity: 1;
     transform: scale(1);
-    width: 200%;
-    height: auto;
-    position: relative;
-    left: -50%;
-    top: -160%;
-    z-index: 5;
     display: unset;
 }

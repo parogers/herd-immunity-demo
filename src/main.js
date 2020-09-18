@@ -35,8 +35,16 @@ function handleClickMatch(match)
             (matches[n].x - match.x) ** 2 +
             (matches[n].y - match.y) ** 2
         );
-        if (matches[n] !== match && dist < igniteDist) {
-            handleClickMatch(matches[n]);
+        if (matches[n] !== match && dist < igniteDist)
+        {
+            (function(match) {
+                setTimeout(
+                    function() {
+                        handleClickMatch(match);
+                    },
+                    50
+                );
+            })(matches[n]);
         }
     }
 }
@@ -48,13 +56,15 @@ function loaded()
 
     window.addEventListener('resize', resize);
 
-    for (let n = 0; n < 100; n++)
+    for (let n = 0; n < 50; n++)
     {
         matches.push({
             x: Math.random()*0.9 + 0.05,
             y: Math.random()*0.85 + 0.05,
             element: createMatchElement(),
         });
+
+        area.appendChild(matches[n].element);
 
         (function(match) {
             match.element.addEventListener('click', function() {
@@ -82,7 +92,5 @@ function resize()
         let match = matches[n];
         match.element.style.left = match.x*rect.width + 'px';
         match.element.style.top = match.y*rect.height + 'px';
-
-        area.appendChild(match.element);
     }
 }
