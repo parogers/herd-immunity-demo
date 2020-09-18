@@ -62,6 +62,13 @@ function loaded()
             });
         })(matches[n]);
     }
+
+    /* Sort the matches so the ones higher up on the screen appear further
+     * back in the scene. */
+    matches.sort(function(match1, match2) {
+        return match1.y - match2.y;
+    });
+
     resize();
 }
 
