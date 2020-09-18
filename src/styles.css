@@ -1,0 +1,48 @@
+
+#area
+{
+    margin-left: auto;
+    margin-right: auto;
+    width: 95vmin;
+    height: 95vmin;
+    border: solid 1px;
+    position: relative;
+    background: lightgray;
+}
+
+.match {
+    position: absolute;
+    display: inline-block;
+    width: 1.5vw;
+    height: calc(1.5vw * 4);
+    padding: 0.25em;
+    cursor: pointer;
+}
+
+.match > img.unlit-match
+{
+    position: relative;
+    width: 100%;
+    height: auto;
+    z-index: 10;
+}
+
+.match > img.flame
+{
+    position: relative;
+    left: -50%;
+    top: -160%;
+    width: 200%;
+    height: auto;
+    transition: transform 200ms ease-out, opacity 100ms;
+    transform: scale(0);
+    opacity: 0;
+    z-index: 5;
+}
+
+.match.lit > img.flame
+{
+    opacity: 1;
+    transform: scale(1);
+    display: unset;
+}
