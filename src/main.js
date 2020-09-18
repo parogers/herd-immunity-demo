@@ -64,8 +64,6 @@ function loaded()
             element: createMatchElement(),
         });
 
-        area.appendChild(matches[n].element);
-
         (function(match) {
             match.element.addEventListener('click', function() {
                 handleClickMatch(match);
@@ -79,6 +77,10 @@ function loaded()
         return match1.y - match2.y;
     });
 
+    /* Now add the matches in the newly sorted order */
+    for (let n = 0; n < matches.length; n++) {
+        area.appendChild(matches[n].element);
+    }
     resize();
 }
 
