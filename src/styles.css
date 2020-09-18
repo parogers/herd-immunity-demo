@@ -1,0 +1,19 @@
+#area
+{
+    width: 500px;
+    height: 500px;
+    border: solid 1px;
+    position: relative;
+    background: lightgray;
+}
+
+#area > img {
+    padding: 0.25em;
+    position: absolute;
+    width: auto;
+    height: 5em;
+}
+
+#area > img:hover {
+    cursor: pointer;
+}
