@@ -10,13 +10,34 @@
     background: lightgray;
 }
 
-#area > img {
-    padding: 0.25em;
+.match {
     position: absolute;
+    display: inline-block;
     width: 1.25vw;
-    height: auto;
+    height: calc(1.25vw * 4);
+    padding: 0.25em;
+    cursor: pointer;
 }
 
-#area > img:hover {
-    cursor: pointer;
+.match > img.unlit-match
+{
+    position: relative;
+    width: 100%;
+    height: auto;
+    z-index: 10;
+}
+
+.match > img.flame {
+    display: none;
+}
+
+.match.lit > img.flame
+{
+    width: 200%;
+    height: auto;
+    position: relative;
+    left: -50%;
+    top: -160%;
+    z-index: 5;
+    display: unset;
 }
