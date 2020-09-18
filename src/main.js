@@ -22,7 +22,23 @@ function createMatchElement()
 
 function handleClickMatch(match)
 {
+    let igniteDist = 0.1;
+
+    if (match.element.classList.contains('lit')) {
+        return;
+    }
+
     match.element.classList.add('lit');
+    for (let n = 0; n < matches.length; n++)
+    {
+        let dist = Math.sqrt(
+            (matches[n].x - match.x) ** 2 +
+            (matches[n].y - match.y) ** 2
+        );
+        if (matches[n] !== match && dist < igniteDist) {
+            handleClickMatch(matches[n]);
+        }
+    }
 }
 
 function loaded()
@@ -32,7 +48,7 @@ function loaded()
 
     window.addEventListener('resize', resize);
 
-    for (let n = 0; n < 10; n++)
+    for (let n = 0; n < 100; n++)
     {
         matches.push({
             x: Math.random()*0.9 + 0.05,
