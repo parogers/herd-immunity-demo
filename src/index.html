@@ -10,8 +10,33 @@
 
     <body onload="loaded()">
 
-        <div id="area">
-        </div>
+        <div class="content">
 
+            <div class="area">
+            </div>
+
+            <div class="controls">
+                <p>
+                    Matches ignited: 23 / 100 (23%)
+                </p>
+
+                <div>
+                    <label for="matches">Number of matches (10)</label>
+                    <input name="matches" type="range" min="10" max="100">
+                </div>
+
+                <div>
+                    <label for="ignition">Ignition radius (5%)</label>
+                    <input name="ignition" type="range" min="0" max="100">
+                </div>
+
+                <div>
+                    <button>
+                        Reset
+                    </button>
+                </div>
+            </div>
+
+        </div>
     </body>
 </html>

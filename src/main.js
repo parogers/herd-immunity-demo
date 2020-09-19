@@ -51,7 +51,7 @@ function handleClickMatch(match)
 
 function loaded()
 {
-    let area = document.getElementById('area');
+    let area = document.querySelector('.area');
     let rect = area.getBoundingClientRect();
 
     window.addEventListener('resize', resize);
@@ -86,7 +86,7 @@ function loaded()
 
 function resize()
 {
-    let area = document.getElementById('area');
+    let area = document.querySelector('.area');
     let rect = area.getBoundingClientRect();
 
     for (let n = 0; n < matches.length; n++)
