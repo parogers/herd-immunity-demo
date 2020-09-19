@@ -1,8 +1,9 @@
 function resetControls()
 {
-    document.querySelector('input[name="matches"]').value = matches.length;
+    let numMatches = 50;
+    document.querySelector('input[name="matches"]').value = numMatches;
     document.querySelector('input[name="ignition"]').value = ignitionRadius;
-    handleNumMatchesChange(matches.length);
+    handleNumMatchesChange(numMatches);
     handleIgnitionRadiusChange(ignitionRadius);
 }
 
@@ -23,4 +24,11 @@ function handleReset()
     for (let n = 0; n < matches.length; n++) {
         matches[n].element.classList.remove('lit');
     }
+}
+
+function handleRandomize()
+{
+    let num = matches.length;
+    populateMatches(0);
+    populateMatches(num);
 }
