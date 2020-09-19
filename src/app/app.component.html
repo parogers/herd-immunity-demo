@@ -1,1 +1,27 @@
-<p>Hello world</p>
+<div class="content">
+
+    <div class="area">
+    </div>
+
+    <div class="controls">
+        <div>
+            <label for="matches">Number of matches (<span class="num-matches">10</span>)</label>
+            <input name="matches" type="range" min="1" max="100" (input)="handleNumMatchesChange($event)">
+        </div>
+
+        <div>
+            <label for="ignition">Ignition radius (<span class="ignition-radius">5%</span>)</label>
+            <input name="ignition" type="range" min="0" max="100" (input)="handleIgnitionRadiusChange($event)">
+        </div>
+
+        <div>
+            <button (click)="handleReset()">
+                Reset
+            </button>
+            <button (click)="handleRandomize()">
+                Randomize
+            </button>
+        </div>
+    </div>
+
+</div>

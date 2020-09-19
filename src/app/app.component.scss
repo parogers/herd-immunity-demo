@@ -15,3 +15,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+.content
+{
+    display: flex;
+}
+
+.area
+{
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 95vmin;
+    height: 95vmin;
+    border: solid 1px;
+    position: relative;
+    background: lightgray;
+}
+
+.controls {
+    padding: 1em;
+}
+
+.controls > div {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.controls > div > label {
+    display: block;
+}
+
+.controls > div > input {
+    width: 100%;
+}
