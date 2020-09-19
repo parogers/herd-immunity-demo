@@ -1,8 +1,13 @@
 
-#area
+.content
 {
-    margin-left: auto;
-    margin-right: auto;
+    display: flex;
+}
+
+.area
+{
+    flex-grow: 0;
+    flex-shrink: 0;
     width: 95vmin;
     height: 95vmin;
     border: solid 1px;
@@ -10,11 +15,28 @@
     background: lightgray;
 }
 
+.controls {
+    padding: 1em;
+}
+
+.controls > div {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.controls > div > label {
+    display: block;
+}
+
+.controls > div > input {
+    width: 100%;
+}
+
 .match {
     position: absolute;
     display: inline-block;
-    width: 1.5vw;
-    height: calc(1.5vw * 4);
+    width: 1.5vmin;
+    height: calc(1.5vmin * 4);
     padding: 0.25em;
     cursor: pointer;
 }
@@ -24,7 +46,6 @@
     position: relative;
     width: 100%;
     height: auto;
-    z-index: 10;
 }
 
 .match > img.flame
@@ -37,7 +58,6 @@
     transition: transform 200ms ease-out, opacity 100ms;
     transform: scale(0);
     opacity: 0;
-    z-index: 5;
 }
 
 .match.lit > img.flame
