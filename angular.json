@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "herd-immunity-demo"
+    }
+  },
+  "defaultProject": "herd-immunity-demo",
+  "cli": {
+    "analytics": false
+  }
 }
