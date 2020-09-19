@@ -1,34 +1,17 @@
 
 function loaded()
 {
-    let area = document.querySelector('.area');
-    let rect = area.getBoundingClientRect();
-
     window.addEventListener('resize', resize);
 
-    for (let n = 0; n < numMatches; n++)
-    {
-        matches.push({
-            x: Math.random()*0.9 + 0.05,
-            y: Math.random()*0.85 + 0.05,
-            element: createMatchElement(),
-        });
-        area.appendChild(matches[n].element);
-
-        (function(match) {
-            match.element.addEventListener('click', function() {
-                handleClickMatch(match);
-            });
-        })(matches[n]);
-    }
+    matchArea = document.querySelector('.area');
+    populateMatches(50);
     resize();
     resetControls();
 }
 
 function resize()
 {
-    let area = document.querySelector('.area');
-    let rect = area.getBoundingClientRect();
+    let rect = matchArea.getBoundingClientRect();
 
     for (let n = 0; n < matches.length; n++)
     {

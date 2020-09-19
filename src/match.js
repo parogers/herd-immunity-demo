@@ -1,6 +1,7 @@
+
+let matchArea;
 let matches = [];
 let ignitionRadius = 10;
-let numMatches = 50;
 
 function createMatchElement()
 {
@@ -45,5 +46,28 @@ function handleClickMatch(match)
                 );
             })(matches[n]);
         }
+    }
+}
+
+function populateMatches(target)
+{
+    while (matches.length > target) {
+        matches.pop();
+    }
+    while (matches.length < target)
+    {
+        let match = {
+            x: Math.random()*0.9 + 0.05,
+            y: Math.random()*0.85 + 0.05,
+            element: createMatchElement(),
+        };
+        matches.push(match);
+        matchArea.appendChild(match.element);
+
+        (function(match) {
+            match.element.addEventListener('click', function() {
+                handleClickMatch(match);
+            });
+        })(match);
     }
 }
