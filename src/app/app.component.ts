@@ -41,6 +41,14 @@ function createMatchElement() : HTMLElement
     return div;
 }
 
+function createRandomMatchPosition() : Point
+{
+    return {
+        x: Math.random()*0.9 + 0.05,
+        y: Math.random()*0.85 + 0.05,
+    };
+}
+
 class Match
 {
     element : HTMLElement;
@@ -86,6 +94,12 @@ class Match
     }
 }
 
+interface Point
+{
+    x : number;
+    y : number;
+}
+
 
 @Component({
     selector: 'app-root',
@@ -103,6 +117,8 @@ export class AppComponent
     @ViewChild('ignitionRadiusInput', { static: true })
     private ignitionRadiusInput;
 
+    matchPositions : Point[];
+
     matches : Match[] = [];
     ignitionRadius = DEFAULT_IGNITION_RADIUS;
 
@@ -113,10 +129,16 @@ export class AppComponent
             () => this.handleWindowResize()
         );
 
+        this.handleRandomize();
         this.populateMatches(DEFAULT_NUM_MATCHES);
 
         this.numMatchesInput.nativeElement.value = this.matches.length;
         this.ignitionRadiusInput.nativeElement.value = this.ignitionRadius;
+    }
+
+    get maxNumMatches() : number
+    {
+        return 100;
     }
 
     get matchArea() : HTMLElement
@@ -138,6 +160,11 @@ export class AppComponent
 
     handleRandomize()
     {
+        this.matchPositions = [];
+        for (let n = 0; n < this.maxNumMatches; n++) {
+            this.matchPositions.push(createRandomMatchPosition());
+        }
+
         const num = this.matches.length;
         this.populateMatches(0);
         this.populateMatches(num);
@@ -188,9 +215,10 @@ export class AppComponent
         }
         while (this.matches.length < target)
         {
+            const point = this.matchPositions[this.matches.length];
             const match = new Match(
-                Math.random()*0.9 + 0.05,
-                Math.random()*0.85 + 0.05,
+                point.x,
+                point.y,
             );
             this.matches.push(match);
             this.matchArea.appendChild(match.element);
