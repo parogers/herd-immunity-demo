@@ -117,6 +117,12 @@ export class AppComponent
     @ViewChild('ignitionRadiusInput', { static: true })
     private ignitionRadiusInput;
 
+    /*
+     * A list of randomly generated points to use for the match positions. This
+     * list is long enough for any number of matches chosen by the slider.
+     * It is randomized at the beginning, and each time the user clicks the
+     * randomize button.
+     */
     matchPositions : Point[];
 
     matches : Match[] = [];
