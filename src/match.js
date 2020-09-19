@@ -52,7 +52,8 @@ function handleClickMatch(match)
 function populateMatches(target)
 {
     while (matches.length > target) {
-        matches.pop();
+        let match = matches.pop();
+        matchArea.removeChild(match.element);
     }
     while (matches.length < target)
     {
@@ -69,5 +70,19 @@ function populateMatches(target)
                 handleClickMatch(match);
             });
         })(match);
+    }
+    placeMatchElements();
+}
+
+function placeMatchElements()
+{
+    let rect = matchArea.getBoundingClientRect();
+
+    for (let n = 0; n < matches.length; n++)
+    {
+        let match = matches[n];
+        match.element.style.left = match.x*rect.width + 'px';
+        match.element.style.top = match.y*rect.height + 'px';
+        match.element.style.zIndex = '' + ((matches[n].y*rect.height)|0);
     }
 }

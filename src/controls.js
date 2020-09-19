@@ -8,6 +8,7 @@ function resetControls()
 
 function handleNumMatchesChange(value)
 {
+    populateMatches(value);
     document.querySelector('span.num-matches').innerHTML = '' + value;
 }
 
