@@ -19,16 +19,20 @@
 import { Component, EventEmitter, ViewChild } from '@angular/core';
 
 
+const DEFAULT_NUM_MATCHES = 50;
+const DEFAULT_IGNITION_RADIUS = 10;
+
+
 function createMatchElement() : HTMLElement
 {
-    let div = document.createElement('div');
+    const div = document.createElement('div');
     div.classList.add('match');
 
-    let matchImg = document.createElement('img');
+    const matchImg = document.createElement('img');
     matchImg.classList.add('unlit-match');
     matchImg.src = 'assets/match.svg';
 
-    let flameImg = document.createElement('img');
+    const flameImg = document.createElement('img');
     flameImg.classList.add('flame');
     flameImg.src = 'assets/flame.svg';
 
@@ -47,9 +51,9 @@ class Match
         public y : number,
     )
     {
-        this.element = createMatchElement();
         this.click = new EventEmitter();
 
+        this.element = createMatchElement();
         this.element.addEventListener('click', () => {
             this.click.emit(this);
         });
@@ -90,11 +94,17 @@ class Match
 })
 export class AppComponent
 {
-    @ViewChild('matchArea', { static: true } )
+    @ViewChild('matchArea', { static: true })
     private _matchArea;
 
+    @ViewChild('numMatchesInput', { static: true})
+    private numMatchesInput;
+
+    @ViewChild('ignitionRadiusInput', { static: true })
+    private ignitionRadiusInput;
+
     matches : Match[] = [];
-    ignitionRadius = 10;
+    ignitionRadius = DEFAULT_IGNITION_RADIUS;
 
     ngOnInit()
     {
@@ -103,7 +113,10 @@ export class AppComponent
             () => this.handleWindowResize()
         );
 
-        this.populateMatches(50);
+        this.populateMatches(DEFAULT_NUM_MATCHES);
+
+        this.numMatchesInput.nativeElement.value = this.matches.length;
+        this.ignitionRadiusInput.nativeElement.value = this.ignitionRadius;
     }
 
     get matchArea() : HTMLElement
@@ -125,7 +138,7 @@ export class AppComponent
 
     handleRandomize()
     {
-        let num = this.matches.length;
+        const num = this.matches.length;
         this.populateMatches(0);
         this.populateMatches(num);
     }
@@ -137,6 +150,7 @@ export class AppComponent
 
     handleIgnitionRadiusChange(event)
     {
+        this.ignitionRadius = event.target.value;
     }
 
     handleWindowResize()
@@ -153,7 +167,7 @@ export class AppComponent
         match.lit = true;
 
         this.matches.forEach(other => {
-            let dist = match.distanceTo(other);
+            const dist = match.distanceTo(other);
             if (other !== match && dist < this.ignitionRadius/100.0)
             {
                 setTimeout(
@@ -169,12 +183,12 @@ export class AppComponent
     populateMatches(target)
     {
         while (this.matches.length > target) {
-            let match = this.matches.pop();
+            const match = this.matches.pop();
             this.matchArea.removeChild(match.element);
         }
         while (this.matches.length < target)
         {
-            let match = new Match(
+            const match = new Match(
                 Math.random()*0.9 + 0.05,
                 Math.random()*0.85 + 0.05,
             );
@@ -190,7 +204,7 @@ export class AppComponent
 
     placeMatchElements()
     {
-        let rect = this.matchArea.getBoundingClientRect();
+        const rect = this.matchArea.getBoundingClientRect();
         this.matches.forEach(match => {
             match.placeElement(rect);
         });

@@ -6,12 +6,12 @@
     <div class="controls">
         <div>
             <label for="matches">Number of matches ({{ numMatches }})</label>
-            <input name="matches" type="range" min="1" max="100" (input)="handleNumMatchesChange($event)">
+            <input #numMatchesInput name="matches" type="range" min="1" max="100" (input)="handleNumMatchesChange($event)">
         </div>
 
         <div>
             <label for="ignition">Ignition radius ({{ ignitionRadius }})</label>
-            <input name="ignition" type="range" min="0" max="100" (input)="handleIgnitionRadiusChange($event)">
+            <input #ignitionRadiusInput name="ignition" type="range" min="0" max="100" (input)="handleIgnitionRadiusChange($event)">
         </div>
 
         <div>
