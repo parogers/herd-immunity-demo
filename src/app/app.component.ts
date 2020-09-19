@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Component, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, ViewChild } from '@angular/core';
 
 
 function createMatchElement() : HTMLElement
@@ -90,8 +90,9 @@ class Match
 })
 export class AppComponent
 {
-    title = 'herd-immunity-demo';
-    matchArea : HTMLElement;
+    @ViewChild('matchArea', { static: true } )
+    private _matchArea;
+
     matches : Match[] = [];
     ignitionRadius = 10;
 
@@ -99,9 +100,13 @@ export class AppComponent
     {
         window.addEventListener('resize', () => this.resize());
 
-        this.matchArea = document.querySelector('.area');
         this.populateMatches(50);
         this.resetControls();
+    }
+
+    get matchArea() : HTMLElement
+    {
+        return this._matchArea.nativeElement;
     }
 
     get numMatches() : number
