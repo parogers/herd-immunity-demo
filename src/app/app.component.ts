@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Component } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 
 
-function createMatchElement()
+function createMatchElement() : HTMLElement
 {
     let div = document.createElement('div');
     div.classList.add('match');
@@ -34,8 +34,52 @@ function createMatchElement()
 
     div.appendChild(matchImg);
     div.appendChild(flameImg);
-
     return div;
+}
+
+class Match
+{
+    element : HTMLElement;
+    click : EventEmitter<any>;
+
+    constructor(
+        public x : number,
+        public y : number,
+    )
+    {
+        this.element = createMatchElement();
+        this.click = new EventEmitter();
+
+        this.element.addEventListener('click', () => {
+            this.click.emit(this);
+        });
+    }
+
+    get lit() : boolean
+    {
+        return this.element.classList.contains('lit');
+    }
+
+    set lit(value : boolean)
+    {
+        if (value) this.element.classList.add('lit');
+        else this.element.classList.remove('lit');
+    }
+
+    placeElement(rect : any)
+    {
+        this.element.style.left = this.x*rect.width + 'px';
+        this.element.style.top = this.y*rect.height + 'px';
+        this.element.style.zIndex = '' + ((this.y*rect.height)|0);
+    }
+
+    distanceTo(other : Match)
+    {
+        return Math.sqrt(
+            (other.x - this.x) ** 2 +
+            (other.y - this.y) ** 2
+        );
+    }
 }
 
 
@@ -47,8 +91,8 @@ function createMatchElement()
 export class AppComponent
 {
     title = 'herd-immunity-demo';
-    matchArea : any;
-    matches : [any] = [];
+    matchArea : HTMLElement;
+    matches : Match[] = [];
     ignitionRadius = 10;
 
     ngOnInit()
@@ -56,13 +100,19 @@ export class AppComponent
         window.addEventListener('resize', () => this.resize());
 
         this.matchArea = document.querySelector('.area');
+        this.populateMatches(50);
         this.resetControls();
+    }
+
+    get numMatches() : number
+    {
+        return this.matches.length;
     }
 
     handleReset()
     {
         for (let n = 0; n < this.matches.length; n++) {
-            this.matches[n].element.classList.remove('lit');
+            this.matches[n].lit = false;
         }
     }
 
@@ -76,7 +126,6 @@ export class AppComponent
     handleNumMatchesChange(event)
     {
         this.populateMatches(event.target.value);
-        document.querySelector('span.num-matches').innerHTML = '' + event.target.value;
     }
 
     handleIgnitionRadiusChange(event)
@@ -85,11 +134,6 @@ export class AppComponent
 
     resetControls()
     {
-        let numMatches = 10;
-        document.querySelector('input[name="matches"]').value = numMatches;
-        document.querySelector('input[name="ignition"]').value = this.ignitionRadius;
-        // handleNumMatchesChange(numMatches);
-        // handleIgnitionRadiusChange(ignitionRadius);
     }
 
     resize()
@@ -99,17 +143,14 @@ export class AppComponent
 
     handleClickMatch(match)
     {
-        if (match.element.classList.contains('lit')) {
+        if (match.lit) {
             return;
         }
 
-        match.element.classList.add('lit');
+        match.lit = true;
         for (let n = 0; n < this.matches.length; n++)
         {
-            let dist = Math.sqrt(
-                (this.matches[n].x - match.x) ** 2 +
-                (this.matches[n].y - match.y) ** 2
-            );
+            let dist = match.distanceTo(this.matches[n]);
             if (this.matches[n] !== match && dist < this.ignitionRadius/100.0)
             {
                 (function(self, match) {
@@ -132,19 +173,16 @@ export class AppComponent
         }
         while (this.matches.length < target)
         {
-            let match = {
-                x: Math.random()*0.9 + 0.05,
-                y: Math.random()*0.85 + 0.05,
-                element: createMatchElement(),
-            };
+            let match = new Match(
+                Math.random()*0.9 + 0.05,
+                Math.random()*0.85 + 0.05,
+            );
             this.matches.push(match);
             this.matchArea.appendChild(match.element);
 
-            (function(self, match) {
-                match.element.addEventListener('click', function() {
-                    self.handleClickMatch(match);
-                });
-            })(this, match);
+            match.click.subscribe(match => {
+                this.handleClickMatch(match);
+            });
         }
         this.placeMatchElements();
     }
@@ -155,10 +193,7 @@ export class AppComponent
 
         for (let n = 0; n < this.matches.length; n++)
         {
-            let match = this.matches[n];
-            match.element.style.left = match.x*rect.width + 'px';
-            match.element.style.top = match.y*rect.height + 'px';
-            match.element.style.zIndex = '' + ((match.y*rect.height)|0);
+            this.matches[n].placeElement(rect);
         }
     }
 }
