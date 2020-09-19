@@ -1,42 +1,13 @@
-<html>
-    <head>
-        <meta charset="utf-8">
-
-        <link rel="stylesheet" href="styles.css">
-
-        <script type="text/javascript" src="match.js"></script>
-        <script type="text/javascript" src="main.js"></script>
-        <script type="text/javascript" src="controls.js"></script>
-    </head>
-
-    <body onload="loaded()">
-
-        <div class="content">
-
-            <div class="area">
-            </div>
-
-            <div class="controls">
-                <div>
-                    <label for="matches">Number of matches (<span class="num-matches">10</span>)</label>
-                    <input name="matches" type="range" min="1" max="100" oninput="handleNumMatchesChange(this.value)">
-                </div>
-
-                <div>
-                    <label for="ignition">Ignition radius (<span class="ignition-radius">5%</span>)</label>
-                    <input name="ignition" type="range" min="0" max="100" oninput="handleIgnitionRadiusChange(this.value)">
-                </div>
-
-                <div>
-                    <button onclick="handleReset()">
-                        Reset
-                    </button>
-                    <button onclick="handleRandomize()">
-                        Randomize
-                    </button>
-                </div>
-            </div>
-
-        </div>
-    </body>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>HerdImmunityDemo</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+</body>
 </html>
