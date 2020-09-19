@@ -98,10 +98,12 @@ export class AppComponent
 
     ngOnInit()
     {
-        window.addEventListener('resize', () => this.resize());
+        window.addEventListener(
+            'resize',
+            () => this.handleWindowResize()
+        );
 
         this.populateMatches(50);
-        this.resetControls();
     }
 
     get matchArea() : HTMLElement
@@ -116,9 +118,9 @@ export class AppComponent
 
     handleReset()
     {
-        for (let n = 0; n < this.matches.length; n++) {
-            this.matches[n].lit = false;
-        }
+        this.matches.forEach(match => {
+            match.lit = false;
+        });
     }
 
     handleRandomize()
@@ -137,11 +139,7 @@ export class AppComponent
     {
     }
 
-    resetControls()
-    {
-    }
-
-    resize()
+    handleWindowResize()
     {
         this.placeMatchElements();
     }
@@ -153,21 +151,19 @@ export class AppComponent
         }
 
         match.lit = true;
-        for (let n = 0; n < this.matches.length; n++)
-        {
-            let dist = match.distanceTo(this.matches[n]);
-            if (this.matches[n] !== match && dist < this.ignitionRadius/100.0)
+
+        this.matches.forEach(other => {
+            let dist = match.distanceTo(other);
+            if (other !== match && dist < this.ignitionRadius/100.0)
             {
-                (function(self, match) {
-                    setTimeout(
-                        function() {
-                            self.handleClickMatch(match);
-                        },
-                        50
-                    );
-                })(this, this.matches[n]);
+                setTimeout(
+                    () => {
+                        this.handleClickMatch(other);
+                    },
+                    50
+                );
             }
-        }
+        });
     }
 
     populateMatches(target)
@@ -195,10 +191,8 @@ export class AppComponent
     placeMatchElements()
     {
         let rect = this.matchArea.getBoundingClientRect();
-
-        for (let n = 0; n < this.matches.length; n++)
-        {
-            this.matches[n].placeElement(rect);
-        }
+        this.matches.forEach(match => {
+            match.placeElement(rect);
+        });
     }
 }
