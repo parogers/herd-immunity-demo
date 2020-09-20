@@ -161,6 +161,11 @@ export class AppComponent
         return this.matches.length;
     }
 
+    get numMatchesListPercent() : number
+    {
+        return (100*this.numMatchesLit/this.numMatches)|0;
+    }
+
     handleReset()
     {
         this.numMatchesLit = 0;
