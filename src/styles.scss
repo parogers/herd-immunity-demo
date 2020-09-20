@@ -10,8 +10,15 @@ body
 {
     position: absolute;
     display: inline-block;
-    width: 2vmin;
-    height: calc(2vmin * 4);
+    /* Calculate the match size as a combination of the document font size, and
+     * a percent of the screen width/height. If the match size were a function
+     * font size only, they wouldn't scale properly between large and small
+     * screens. (they would either look too big on small screens, or too small
+     * on large screens) Likewise if the match size were a function of screen
+     * width/height. A combination of techniques makes for a better appearance
+     * across screen sizes. */
+    width: calc(0.5rem + 1vmin);
+    height: calc(calc(0.5rem + 1vmin) * 4);
     padding: 0.25em;
     cursor: pointer;
 
