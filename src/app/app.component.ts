@@ -130,6 +130,8 @@ export class AppComponent
     matches : Match[] = [];
     ignitionRadius = DEFAULT_IGNITION_RADIUS;
 
+    numMatchesLit : number = 0;
+
     ngOnInit()
     {
         window.addEventListener(
@@ -161,6 +163,7 @@ export class AppComponent
 
     handleReset()
     {
+        this.numMatchesLit = 0;
         this.matches.forEach(match => {
             match.lit = false;
         });
@@ -199,6 +202,7 @@ export class AppComponent
             return;
         }
 
+        this.numMatchesLit++;
         match.lit = true;
 
         // Collect a list of matches to ignite near the given match

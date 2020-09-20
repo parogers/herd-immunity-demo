@@ -7,6 +7,10 @@
 
     <div class="controls">
         <div>
+            Matches lit: {{ numMatchesLit }}
+        </div>
+
+        <div>
             <label for="matches">Number of matches ({{ numMatches }})</label>
             <input #numMatchesInput name="matches" type="range" min="1" max="{{ maxNumMatches }}" (input)="handleNumMatchesChange($event)">
         </div>
