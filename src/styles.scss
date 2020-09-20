@@ -1,36 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
 
-.match {
+body
+{
+    padding: 0;
+    margin: 0;
+}
+
+.match
+{
     position: absolute;
     display: inline-block;
-    width: 1.5vmin;
-    height: calc(1.5vmin * 4);
+    /* Calculate the match size as a combination of the document font size, and
+     * a percent of the screen width/height. If the match size were a function
+     * font size only, they wouldn't scale properly between large and small
+     * screens. (they would either look too big on small screens, or too small
+     * on large screens) Likewise if the match size were a function of screen
+     * width/height. A combination of techniques makes for a better appearance
+     * across screen sizes. */
+    width: calc(0.5rem + 1vmin);
+    height: calc(calc(0.5rem + 1vmin) * 4);
     padding: 0.25em;
     cursor: pointer;
-}
 
-.match > img.unlit-match
-{
-    position: relative;
-    width: 100%;
-    height: auto;
-}
+    & > img.unlit-match
+    {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
 
-.match > img.flame
-{
-    position: relative;
-    left: -50%;
-    top: -160%;
-    width: 200%;
-    height: auto;
-    transition: transform 200ms ease-out, opacity 100ms;
-    transform: scale(0);
-    opacity: 0;
-}
+    & > img.flame
+    {
+        position: relative;
+        left: -50%;
+        top: -160%;
+        width: 200%;
+        height: auto;
+        transition: transform 200ms ease-out, opacity 100ms;
+        transform: scale(0);
+        opacity: 0;
+    }
 
-.match.lit > img.flame
-{
-    opacity: 1;
-    transform: scale(1);
-    display: unset;
+    &.lit > img.flame
+    {
+        opacity: 1;
+        transform: scale(1);
+        display: unset;
+    }
+
 }

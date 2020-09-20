@@ -18,33 +18,86 @@
 
 .content
 {
+    width: 100vw;
+    height: 100vh;
     display: flex;
+
+    @media only screen and (orientation: portrait) {
+        flex-direction: column;
+    }
+}
+
+.match-area-container
+{
+    flex-grow: 1;
+    flex-shrink: 0;
+    height: 100%;
+
+    @media only screen and (orientation: portrait) {
+        width: 100%;
+        height: unset;
+    }
 }
 
 .match-area
 {
-    flex-grow: 0;
-    flex-shrink: 0;
-    width: 95vmin;
-    height: 95vmin;
-    border: solid 1px;
-    position: relative;
-    background: lightgray;
-}
-
-.controls {
-    padding: 1em;
-}
-
-.controls > div {
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-}
-
-.controls > div > label {
-    display: block;
-}
-
-.controls > div > input {
     width: 100%;
+    height: 100%;
+    position: relative;
+    background: #e9e9e9;
+    overflow: hidden;
+}
+
+.controls
+{
+    padding: 1em;
+    flex-basis: 1;
+
+    @media only screen and (orientation: portrait)
+    {
+        font-size: 0.85em;
+    }
+
+    & > div
+    {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+
+        @media only screen and (orientation: portrait)
+        {
+            padding: 0;
+            text-align: center;
+        }
+
+        label
+        {
+            display: block;
+        }
+
+        input
+        {
+            width: 100%;
+        }
+    }
+
+    .buttons
+    {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3em;
+
+        button
+        {
+            flex-grow: 1;
+            margin-bottom: 0.5em;
+            padding-bottom: 0.25em;
+            padding-left: 0;
+            padding-right: 0;
+
+            @media only screen and (orientation: portrait)
+            {
+                font-size: 0.85em;
+            }
+        }
+    }
 }

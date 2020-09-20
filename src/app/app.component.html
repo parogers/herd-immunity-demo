@@ -1,6 +1,8 @@
 <div class="content">
 
-    <div class="match-area" #matchArea>
+    <div class="match-area-container">
+        <div class="match-area" #matchArea>
+        </div>
     </div>
 
     <div class="controls">
@@ -14,7 +16,7 @@
             <input #ignitionRadiusInput name="ignition" type="range" min="0" max="100" (input)="handleIgnitionRadiusChange($event)">
         </div>
 
-        <div>
+        <div class="buttons">
             <button (click)="handleReset()">
                 Reset
             </button>
