@@ -201,18 +201,27 @@ export class AppComponent
 
         match.lit = true;
 
-        this.matches.forEach(other => {
-            const dist = match.distanceTo(other);
-            if (other !== match && dist < this.ignitionRadius/100.0)
-            {
-                setTimeout(
-                    () => {
-                        this.handleClickMatch(other);
-                    },
-                    50
-                );
-            }
+        // Collect a list of matches to ignite near the given match
+        const lightList = this.matches.filter(other => {
+            return (
+                !other.lit &&
+                match.distanceTo(other) < this.ignitionRadius/100.0
+            );
         });
+
+        // Light them all after a short delay
+        setTimeout(
+            () => {
+                lightList.forEach(other => {
+                    // Check lit here to we don't call handleClickMatch on
+                    // a match that's already been lit earlier in this loop.
+                    if (!other.lit) {
+                        this.handleClickMatch(other);
+                    }
+                });
+            },
+            40
+        );
     }
 
     populateMatches(target)
