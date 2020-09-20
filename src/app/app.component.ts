@@ -21,6 +21,10 @@ import { Component, EventEmitter, ViewChild } from '@angular/core';
 
 const DEFAULT_NUM_MATCHES = 50;
 const DEFAULT_IGNITION_RADIUS = 10;
+// This is intentionally set low just to prevent tight clustering/overlapping
+// of matches. Setting it too high will make the matches look artificially
+// spaced out and not random.
+const MIN_MATCH_DIST = 0.01;
 
 
 function createMatchElement() : HTMLElement
@@ -41,12 +45,47 @@ function createMatchElement() : HTMLElement
     return div;
 }
 
-function createRandomMatchPosition() : Point
+/*
+ * Attempt to pick a random point that is at least 'minDist' away from the
+ * given list of points. The arg 'tries' is the number of attempts to make
+ * before giving up and just returning a point chosen at random.
+ */
+function createRandomMatchPosition(
+    matchPosList : Point[],
+    minDist : number,
+    tries : number
+) : Point
 {
-    return {
-        x: Math.random()*0.9 + 0.05,
-        y: Math.random()*0.85 + 0.05,
-    };
+    function randomPoint()
+    {
+        // Magic values to take into account the tall/skinny shape of the match,
+        // so that matches don't get cut off if near the margins.
+        return {
+            x: Math.random()*0.9 + 0.05,
+            y: Math.random()*0.85 + 0.05,
+        };
+    }
+
+    function closeTo(matchPosList : Point[], point : Point, dist : number)
+    {
+        return matchPosList.some(other => {
+            const measured = Math.sqrt(
+                (other.x - point.x) ** 2 +
+                (other.y - point.y) ** 2
+            );
+            return measured < dist;
+        });
+    }
+
+    for (let n = 0; n < tries; n++)
+    {
+        const point = randomPoint();
+        if (!closeTo(matchPosList, point, minDist)) {
+            return point;
+        }
+    }
+
+    return randomPoint();
 }
 
 class Match
@@ -177,8 +216,11 @@ export class AppComponent
     handleRandomize()
     {
         this.matchPositions = [];
-        for (let n = 0; n < this.maxNumMatches; n++) {
-            this.matchPositions.push(createRandomMatchPosition());
+        for (let n = 0; n < this.maxNumMatches; n++)
+        {
+            this.matchPositions.push(
+                createRandomMatchPosition(this.matchPositions, MIN_MATCH_DIST, 5)
+            );
         }
 
         const num = this.matches.length;
