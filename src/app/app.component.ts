@@ -144,7 +144,7 @@ export class AppComponent
 
     get maxNumMatches() : number
     {
-        return 100;
+        return 200;
     }
 
     get matchArea() : HTMLElement
