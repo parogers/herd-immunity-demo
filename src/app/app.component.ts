@@ -53,6 +53,7 @@ class Match
 {
     element : HTMLElement;
     click : EventEmitter<any>;
+    _lit : boolean = false;
 
     constructor(
         public x : number,
@@ -69,11 +70,12 @@ class Match
 
     get lit() : boolean
     {
-        return this.element.classList.contains('lit');
+        return this._lit;
     }
 
     set lit(value : boolean)
     {
+        this._lit = value;
         if (value) this.element.classList.add('lit');
         else this.element.classList.remove('lit');
     }
