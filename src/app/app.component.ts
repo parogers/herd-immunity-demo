@@ -194,6 +194,7 @@ export class AppComponent
     handleIgnitionRadiusChange(event)
     {
         this.ignitionRadius = event.target.value;
+        this.handleReset();
     }
 
     handleWindowResize()
