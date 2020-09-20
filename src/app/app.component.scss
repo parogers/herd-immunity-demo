@@ -32,19 +32,23 @@
     overflow: hidden;
 }
 
-.controls {
+.controls
+{
     padding: 1em;
-}
 
-.controls > div {
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-}
+    & > div
+    {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
 
-.controls > div > label {
-    display: block;
-}
+    & > div > label
+    {
+        display: block;
+    }
 
-.controls > div > input {
-    width: 100%;
+    & > div > input
+    {
+        width: 100%;
+    }
 }

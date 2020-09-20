@@ -6,37 +6,39 @@ body
     margin: 0;
 }
 
-.match {
+.match
+{
     position: absolute;
     display: inline-block;
     width: 2vmin;
     height: calc(2vmin * 4);
     padding: 0.25em;
     cursor: pointer;
-}
 
-.match > img.unlit-match
-{
-    position: relative;
-    width: 100%;
-    height: auto;
-}
+    & > img.unlit-match
+    {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
 
-.match > img.flame
-{
-    position: relative;
-    left: -50%;
-    top: -160%;
-    width: 200%;
-    height: auto;
-    transition: transform 200ms ease-out, opacity 100ms;
-    transform: scale(0);
-    opacity: 0;
-}
+    & > img.flame
+    {
+        position: relative;
+        left: -50%;
+        top: -160%;
+        width: 200%;
+        height: auto;
+        transition: transform 200ms ease-out, opacity 100ms;
+        transform: scale(0);
+        opacity: 0;
+    }
 
-.match.lit > img.flame
-{
-    opacity: 1;
-    transform: scale(1);
-    display: unset;
+    &.lit > img.flame
+    {
+        opacity: 1;
+        transform: scale(1);
+        display: unset;
+    }
+
 }
