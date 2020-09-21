@@ -114,9 +114,12 @@ class Match
 
     set lit(value : boolean)
     {
-        this._lit = value;
-        if (value) this.element.classList.add('lit');
-        else this.element.classList.remove('lit');
+        if (this._lit !== value)
+        {
+            this._lit = value;
+            if (value) this.element.classList.add('lit');
+            else this.element.classList.remove('lit');
+        }
     }
 
     placeElement(rect : any)
