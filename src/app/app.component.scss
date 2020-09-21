@@ -72,6 +72,13 @@
         label
         {
             display: block;
+
+            .num-matches
+            {
+                display: inline-block;
+                min-width: 3em;
+                text-align: left;
+            }
         }
 
         input

@@ -21,6 +21,10 @@ import { Component, EventEmitter, ViewChild } from '@angular/core';
 
 const DEFAULT_NUM_MATCHES = 50;
 const DEFAULT_IGNITION_RADIUS = 10;
+// This is intentionally set low just to prevent tight clustering/overlapping
+// of matches. Setting it too high will make the matches look artificially
+// spaced out and not random.
+const MIN_MATCH_DIST = 0.01;
 
 
 function createMatchElement() : HTMLElement
@@ -41,18 +45,54 @@ function createMatchElement() : HTMLElement
     return div;
 }
 
-function createRandomMatchPosition() : Point
+/*
+ * Attempt to pick a random point that is at least 'minDist' away from the
+ * given list of points. The arg 'tries' is the number of attempts to make
+ * before giving up and just returning a point chosen at random.
+ */
+function createRandomMatchPosition(
+    matchPosList : Point[],
+    minDist : number,
+    tries : number
+) : Point
 {
-    return {
-        x: Math.random()*0.9 + 0.05,
-        y: Math.random()*0.85 + 0.05,
-    };
+    function randomPoint()
+    {
+        // Magic values to take into account the tall/skinny shape of the match,
+        // so that matches don't get cut off if near the margins.
+        return {
+            x: Math.random()*0.9 + 0.05,
+            y: Math.random()*0.85 + 0.05,
+        };
+    }
+
+    function closeTo(matchPosList : Point[], point : Point, dist : number)
+    {
+        return matchPosList.some(other => {
+            const measured = Math.sqrt(
+                (other.x - point.x) ** 2 +
+                (other.y - point.y) ** 2
+            );
+            return measured < dist;
+        });
+    }
+
+    for (let n = 0; n < tries; n++)
+    {
+        const point = randomPoint();
+        if (!closeTo(matchPosList, point, minDist)) {
+            return point;
+        }
+    }
+
+    return randomPoint();
 }
 
 class Match
 {
     element : HTMLElement;
     click : EventEmitter<any>;
+    _lit : boolean = false;
 
     constructor(
         public x : number,
@@ -69,11 +109,12 @@ class Match
 
     get lit() : boolean
     {
-        return this.element.classList.contains('lit');
+        return this._lit;
     }
 
     set lit(value : boolean)
     {
+        this._lit = value;
         if (value) this.element.classList.add('lit');
         else this.element.classList.remove('lit');
     }
@@ -128,6 +169,8 @@ export class AppComponent
     matches : Match[] = [];
     ignitionRadius = DEFAULT_IGNITION_RADIUS;
 
+    numMatchesLit : number = 0;
+
     ngOnInit()
     {
         window.addEventListener(
@@ -144,7 +187,7 @@ export class AppComponent
 
     get maxNumMatches() : number
     {
-        return 100;
+        return 200;
     }
 
     get matchArea() : HTMLElement
@@ -157,8 +200,14 @@ export class AppComponent
         return this.matches.length;
     }
 
+    get numMatchesListPercent() : number
+    {
+        return (100*this.numMatchesLit/this.numMatches)|0;
+    }
+
     handleReset()
     {
+        this.numMatchesLit = 0;
         this.matches.forEach(match => {
             match.lit = false;
         });
@@ -167,8 +216,11 @@ export class AppComponent
     handleRandomize()
     {
         this.matchPositions = [];
-        for (let n = 0; n < this.maxNumMatches; n++) {
-            this.matchPositions.push(createRandomMatchPosition());
+        for (let n = 0; n < this.maxNumMatches; n++)
+        {
+            this.matchPositions.push(
+                createRandomMatchPosition(this.matchPositions, MIN_MATCH_DIST, 5)
+            );
         }
 
         const num = this.matches.length;
@@ -184,6 +236,7 @@ export class AppComponent
     handleIgnitionRadiusChange(event)
     {
         this.ignitionRadius = event.target.value;
+        this.handleReset();
     }
 
     handleWindowResize()
@@ -197,20 +250,30 @@ export class AppComponent
             return;
         }
 
+        this.numMatchesLit++;
         match.lit = true;
 
-        this.matches.forEach(other => {
-            const dist = match.distanceTo(other);
-            if (other !== match && dist < this.ignitionRadius/100.0)
-            {
-                setTimeout(
-                    () => {
-                        this.handleClickMatch(other);
-                    },
-                    50
-                );
-            }
+        // Collect a list of matches to ignite near the given match
+        const lightList = this.matches.filter(other => {
+            return (
+                !other.lit &&
+                match.distanceTo(other) < this.ignitionRadius/100.0
+            );
         });
+
+        // Light them all after a short delay
+        setTimeout(
+            () => {
+                lightList.forEach(other => {
+                    // Check lit here to we don't call handleClickMatch on
+                    // a match that's already been lit earlier in this loop.
+                    if (!other.lit) {
+                        this.handleClickMatch(other);
+                    }
+                });
+            },
+            40
+        );
     }
 
     populateMatches(target)

@@ -7,7 +7,11 @@
 
     <div class="controls">
         <div>
-            <label for="matches">Number of matches ({{ numMatches }})</label>
+            Matches lit: {{ numMatchesLit }} ({{ numMatchesListPercent }}%)
+        </div>
+
+        <div>
+            <label for="matches">Number of matches <span class="num-matches">({{ numMatches }})</span></label>
             <input #numMatchesInput name="matches" type="range" min="1" max="{{ maxNumMatches }}" (input)="handleNumMatchesChange($event)">
         </div>
 
