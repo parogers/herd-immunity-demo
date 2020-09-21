@@ -186,6 +186,14 @@ export class AppComponent
 
         this.numMatchesInput.nativeElement.value = this.matches.length;
         this.ignitionRadiusInput.nativeElement.value = this.ignitionRadius;
+
+        /* Recalculate the match placement after a short time. This is a hack
+         * to fix a bug that appears while in portrait mode - the match area
+         * gets resized after ngOnInit (probably flexbox related) and this
+         * code doesn't catch that. */
+        setTimeout(() => {
+            this.placeMatchElements();
+        }, 100);
     }
 
     get maxNumMatches() : number
