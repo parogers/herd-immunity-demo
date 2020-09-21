@@ -56,13 +56,17 @@ function createRandomMatchPosition(
     tries : number
 ) : Point
 {
+    function uniform(a, b) {
+        return a + Math.random()*(b-a);
+    }
+
     function randomPoint()
     {
         // Magic values to take into account the tall/skinny shape of the match,
         // so that matches don't get cut off if near the margins.
         return {
-            x: Math.random()*0.9 + 0.05,
-            y: Math.random()*0.85 + 0.05,
+            x: uniform(0, 0.95),
+            y: uniform(0, 0.86),
         };
     }
 
@@ -186,6 +190,14 @@ export class AppComponent
 
         this.numMatchesInput.nativeElement.value = this.matches.length;
         this.ignitionRadiusInput.nativeElement.value = this.ignitionRadius;
+
+        /* Recalculate the match placement after a short time. This is a hack
+         * to fix a bug that appears while in portrait mode - the match area
+         * gets resized after ngOnInit (probably flexbox related) and this
+         * code doesn't catch that. */
+        setTimeout(() => {
+            this.placeMatchElements();
+        }, 100);
     }
 
     get maxNumMatches() : number
