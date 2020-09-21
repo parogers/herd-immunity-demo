@@ -234,6 +234,7 @@ export class AppComponent
     handleNumMatchesChange(event)
     {
         this.populateMatches(event.target.value);
+        this.handleReset();
     }
 
     handleIgnitionRadiusChange(event)
