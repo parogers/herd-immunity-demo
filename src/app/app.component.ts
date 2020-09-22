@@ -21,6 +21,7 @@ import { Component, EventEmitter, ViewChild } from '@angular/core';
 
 const DEFAULT_NUM_MATCHES = 50;
 const DEFAULT_IGNITION_RADIUS = 10;
+const DEFAULT_PERCENT_IMMUNITY = 25;
 // This is intentionally set low just to prevent tight clustering/overlapping
 // of matches. Setting it too high will make the matches look artificially
 // spaced out and not random.
@@ -165,6 +166,9 @@ export class AppComponent
     @ViewChild('ignitionRadiusInput', { static: true })
     private ignitionRadiusInput;
 
+    @ViewChild('percentImmunityInput', { static: true })
+    private percentImmunityInput;
+
     /*
      * A list of randomly generated points to use for the match positions. This
      * list is long enough for any number of matches chosen by the slider.
@@ -175,7 +179,7 @@ export class AppComponent
 
     matches : Match[] = [];
     ignitionRadius = DEFAULT_IGNITION_RADIUS;
-
+    percentImmunity = DEFAULT_PERCENT_IMMUNITY;
     numMatchesLit : number = 0;
 
     ngOnInit()
@@ -190,6 +194,7 @@ export class AppComponent
 
         this.numMatchesInput.nativeElement.value = this.matches.length;
         this.ignitionRadiusInput.nativeElement.value = this.ignitionRadius;
+        this.percentImmunityInput.nativeElement.value = this.percentImmunity;
 
         /* Recalculate the match placement after a short time. This is a hack
          * to fix a bug that appears while in portrait mode - the match area
@@ -321,5 +326,10 @@ export class AppComponent
         this.matches.forEach(match => {
             match.placeElement(rect);
         });
+    }
+
+    handlePercentImmunityChange(event)
+    {
+        this.percentImmunity = event.target.value;
     }
 }
