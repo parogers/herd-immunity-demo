@@ -9,13 +9,22 @@
         </div>
 
         <div>
-            <label for="matches">Number of matches <span class="num-matches">({{ numMatches }})</span></label>
+            Matches immune: {{ numMatchesImmune }}
+        </div>
+
+        <div>
+            <label for="matches">Immunity <span class="immunity">({{ percentImmunity }}%)</span></label>
+            <input #percentImmunityInput name="immunity" type="range" min="0" max="100" (change)="handlePercentImmunityChange($event.target.value)">
+        </div>
+
+        <div>
+            <label for="matches">Number of matches <span class="num-matches">({{ numMatchesShown }})</span></label>
             <input #numMatchesInput name="matches" type="range" min="1" max="{{ maxNumMatches }}" (input)="handleNumMatchesChange($event)">
         </div>
 
         <div>
             <label for="ignition">Ignition radius ({{ ignitionRadius }})</label>
-            <input #ignitionRadiusInput name="ignition" type="range" min="0" max="100" (input)="handleIgnitionRadiusChange($event)">
+            <input #ignitionRadiusInput name="ignition" type="range" min="0" max="50" (input)="handleIgnitionRadiusChange($event)">
         </div>
 
         <div class="buttons">

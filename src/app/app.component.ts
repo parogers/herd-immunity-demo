@@ -21,10 +21,11 @@ import { Component, EventEmitter, ViewChild } from '@angular/core';
 
 const DEFAULT_NUM_MATCHES = 50;
 const DEFAULT_IGNITION_RADIUS = 10;
+const DEFAULT_PERCENT_IMMUNITY = 25;
 // This is intentionally set low just to prevent tight clustering/overlapping
 // of matches. Setting it too high will make the matches look artificially
 // spaced out and not random.
-const MIN_MATCH_DIST = 0.01;
+const MIN_MATCH_DIST = 0.02;
 
 
 function createMatchElement() : HTMLElement
@@ -36,11 +37,16 @@ function createMatchElement() : HTMLElement
     matchImg.classList.add('unlit-match');
     matchImg.src = 'assets/match.svg';
 
+    const spentImg = document.createElement('img');
+    spentImg.classList.add('spent-match');
+    spentImg.src = 'assets/spent-match.svg';
+
     const flameImg = document.createElement('img');
     flameImg.classList.add('flame');
     flameImg.src = 'assets/flame.svg';
 
     div.appendChild(matchImg);
+    div.appendChild(spentImg);
     div.appendChild(flameImg);
     return div;
 }
@@ -94,14 +100,14 @@ function createRandomMatchPosition(
 
 class Match
 {
+    x : number = 0;
+    y : number = 0;
     element : HTMLElement;
     click : EventEmitter<any>;
     _lit : boolean = false;
+    _spent : boolean = false;
 
-    constructor(
-        public x : number,
-        public y : number,
-    )
+    constructor()
     {
         this.click = new EventEmitter();
 
@@ -109,6 +115,20 @@ class Match
         this.element.addEventListener('click', () => {
             this.click.emit(this);
         });
+    }
+
+    get spent() : boolean
+    {
+        return this._spent;
+    }
+
+    set spent(value : boolean)
+    {
+        if (value !== this._spent) {
+            this._spent = value;
+            if (value) this.element.classList.add('spent');
+            else this.element.classList.remove('spent');
+        }
     }
 
     get lit() : boolean
@@ -165,18 +185,15 @@ export class AppComponent
     @ViewChild('ignitionRadiusInput', { static: true })
     private ignitionRadiusInput;
 
-    /*
-     * A list of randomly generated points to use for the match positions. This
-     * list is long enough for any number of matches chosen by the slider.
-     * It is randomized at the beginning, and each time the user clicks the
-     * randomize button.
-     */
-    matchPositions : Point[];
+    @ViewChild('percentImmunityInput', { static: true })
+    private percentImmunityInput;
 
+    cachedMatches : Match[];
     matches : Match[] = [];
     ignitionRadius = DEFAULT_IGNITION_RADIUS;
-
+    percentImmunity = DEFAULT_PERCENT_IMMUNITY;
     numMatchesLit : number = 0;
+    numMatchesImmune : number = 0;
 
     ngOnInit()
     {
@@ -185,11 +202,24 @@ export class AppComponent
             () => this.handleWindowResize()
         );
 
-        this.handleRandomize();
-        this.populateMatches(DEFAULT_NUM_MATCHES);
+        this.matches = [];
+        this.cachedMatches = [];
+        while (this.cachedMatches.length < this.maxNumMatches)
+        {
+            const match = new Match();
+            match.click.subscribe(match => {
+                this.handleClickMatch(match);
+            });
+            this.cachedMatches.push(match);
+        }
 
-        this.numMatchesInput.nativeElement.value = this.matches.length;
+        // this.numMatchesInput.nativeElement.value = ;
         this.ignitionRadiusInput.nativeElement.value = this.ignitionRadius;
+        this.percentImmunityInput.nativeElement.value = this.percentImmunity;
+
+        this.handleRandomize();
+
+        this.numMatchesShown = DEFAULT_NUM_MATCHES;
 
         /* Recalculate the match placement after a short time. This is a hack
          * to fix a bug that appears while in portrait mode - the match area
@@ -198,6 +228,49 @@ export class AppComponent
         setTimeout(() => {
             this.placeMatchElements();
         }, 100);
+    }
+
+    get numMatchesShown() : number
+    {
+        return this.matches.length;
+    }
+
+    set numMatchesShown(value : number)
+    {
+        /* Remove/add match elements until we reach the target number */
+        while (this.matches.length > value)
+        {
+            this.matchArea.removeChild(
+                this.matches.pop().element
+            );
+        }
+
+        const rect = this.matchArea.getBoundingClientRect();
+
+        while (this.matches.length < value)
+        {
+            const match = this.cachedMatches[this.matches.length];
+            this.matches.push(match);
+            this.matchArea.appendChild(match.element);
+
+            match.placeElement(rect);
+        }
+
+        function shuffle(lst : any[]) : any[]
+        {
+            const copy = lst.slice();
+            const newList = [];
+
+            while (copy.length > 0)
+            {
+                const pos = (Math.random()*copy.length)|0;
+                newList.push(copy[pos]);
+                copy.splice(pos, 1);
+            }
+
+            return newList;
+        }
+        this.handlePercentImmunityChange(this.percentImmunity);
     }
 
     get maxNumMatches() : number
@@ -210,14 +283,9 @@ export class AppComponent
         return this._matchArea.nativeElement;
     }
 
-    get numMatches() : number
-    {
-        return this.matches.length;
-    }
-
     get numMatchesListPercent() : number
     {
-        return (100*this.numMatchesLit/this.numMatches)|0;
+        return (100*this.numMatchesLit/this.numMatchesShown)|0;
     }
 
     handleReset()
@@ -230,22 +298,21 @@ export class AppComponent
 
     handleRandomize()
     {
-        this.matchPositions = [];
-        for (let n = 0; n < this.maxNumMatches; n++)
-        {
-            this.matchPositions.push(
-                createRandomMatchPosition(this.matchPositions, MIN_MATCH_DIST, 5)
-            );
-        }
-
-        const num = this.matches.length;
-        this.populateMatches(0);
-        this.populateMatches(num);
+        const points = [];
+        this.cachedMatches.forEach(match => {
+            const point = createRandomMatchPosition(points, MIN_MATCH_DIST, 5);
+            points.push(point);
+            match.x = point.x;
+            match.y = point.y;
+        });
+        this.handleReset();
+        this.placeMatchElements();
+        this.handlePercentImmunityChange(this.percentImmunity);
     }
 
     handleNumMatchesChange(event)
     {
-        this.populateMatches(event.target.value);
+        this.numMatchesShown = event.target.value;
         this.handleReset();
     }
 
@@ -262,7 +329,7 @@ export class AppComponent
 
     handleClickMatch(match)
     {
-        if (match.lit) {
+        if (match.lit || match.spent) {
             return;
         }
 
@@ -292,34 +359,29 @@ export class AppComponent
         );
     }
 
-    populateMatches(target)
-    {
-        while (this.matches.length > target) {
-            const match = this.matches.pop();
-            this.matchArea.removeChild(match.element);
-        }
-        while (this.matches.length < target)
-        {
-            const point = this.matchPositions[this.matches.length];
-            const match = new Match(
-                point.x,
-                point.y,
-            );
-            this.matches.push(match);
-            this.matchArea.appendChild(match.element);
-
-            match.click.subscribe(match => {
-                this.handleClickMatch(match);
-            });
-        }
-        this.placeMatchElements();
-    }
-
     placeMatchElements()
     {
         const rect = this.matchArea.getBoundingClientRect();
         this.matches.forEach(match => {
             match.placeElement(rect);
         });
+    }
+
+    handlePercentImmunityChange(value)
+    {
+        this.percentImmunity = value;
+
+        this.numMatchesImmune = 0;
+        let spent = 0;
+        this.matches.forEach((match, index) => {
+            if (spent/(index+1) < this.percentImmunity/100) {
+                match.spent = true;
+                spent++;
+                this.numMatchesImmune++;
+            } else {
+                match.spent = false;
+            }
+        });
+        this.handleReset();
     }
 }
