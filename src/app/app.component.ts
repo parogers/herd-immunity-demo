@@ -188,6 +188,7 @@ export class AppComponent
     @ViewChild('percentImmunityInput', { static: true })
     private percentImmunityInput;
 
+    immunityOrdering : Match[];
     cachedMatches : Match[];
     matches : Match[] = [];
     ignitionRadius = DEFAULT_IGNITION_RADIUS;
@@ -212,11 +213,13 @@ export class AppComponent
             this.cachedMatches.push(match);
         }
 
-        this.handleRandomize();
-
-        this.numMatchesInput.nativeElement.value = this.matches.length;
+        // this.numMatchesInput.nativeElement.value = ;
         this.ignitionRadiusInput.nativeElement.value = this.ignitionRadius;
         this.percentImmunityInput.nativeElement.value = this.percentImmunity;
+
+        this.handleRandomize();
+
+        this.numMatchesShown = DEFAULT_NUM_MATCHES;
 
         /* Recalculate the match placement after a short time. This is a hack
          * to fix a bug that appears while in portrait mode - the match area
@@ -252,6 +255,7 @@ export class AppComponent
 
             match.placeElement(rect);
         }
+        this.handlePercentImmunityChange(this.percentImmunity);
     }
 
     get maxNumMatches() : number
@@ -287,6 +291,7 @@ export class AppComponent
             match.y = point.y;
         });
         this.placeMatchElements();
+        this.handlePercentImmunityChange(this.percentImmunity);
     }
 
     handleNumMatchesChange(event)
