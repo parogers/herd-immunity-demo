@@ -193,6 +193,7 @@ export class AppComponent
     ignitionRadius = DEFAULT_IGNITION_RADIUS;
     percentImmunity = DEFAULT_PERCENT_IMMUNITY;
     numMatchesLit : number = 0;
+    numMatchesImmune : number = 0;
 
     ngOnInit()
     {
@@ -369,11 +370,13 @@ export class AppComponent
     {
         this.percentImmunity = value;
 
+        this.numMatchesImmune = 0;
         let spent = 0;
         this.matches.forEach((match, index) => {
             if (spent/(index+1) < this.percentImmunity/100) {
                 match.spent = true;
                 spent++;
+                this.numMatchesImmune++;
             } else {
                 match.spent = false;
             }

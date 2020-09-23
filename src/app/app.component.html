@@ -9,6 +9,10 @@
         </div>
 
         <div>
+            Matches immune: {{ numMatchesImmune }}
+        </div>
+
+        <div>
             <label for="matches">Immunity <span class="immunity">({{ percentImmunity }})</span></label>
             <input #percentImmunityInput name="immunity" type="range" min="0" max="100" (change)="handlePercentImmunityChange($event.target.value)">
         </div>
