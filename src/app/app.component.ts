@@ -382,5 +382,6 @@ export class AppComponent
                 match.spent = false;
             }
         });
+        this.handleReset();
     }
 }
