@@ -305,6 +305,7 @@ export class AppComponent
             match.x = point.x;
             match.y = point.y;
         });
+        this.handleReset();
         this.placeMatchElements();
         this.handlePercentImmunityChange(this.percentImmunity);
     }
