@@ -100,15 +100,14 @@ function createRandomMatchPosition(
 
 class Match
 {
+    x : number = 0;
+    y : number = 0;
     element : HTMLElement;
     click : EventEmitter<any>;
     _lit : boolean = false;
     _spent : boolean = false;
 
-    constructor(
-        public x : number,
-        public y : number,
-    )
+    constructor()
     {
         this.click = new EventEmitter();
 
@@ -189,14 +188,7 @@ export class AppComponent
     @ViewChild('percentImmunityInput', { static: true })
     private percentImmunityInput;
 
-    /*
-     * A list of randomly generated points to use for the match positions. This
-     * list is long enough for any number of matches chosen by the slider.
-     * It is randomized at the beginning, and each time the user clicks the
-     * randomize button.
-     */
-    matchPositions : Point[];
-
+    cachedMatches : Match[];
     matches : Match[] = [];
     ignitionRadius = DEFAULT_IGNITION_RADIUS;
     percentImmunity = DEFAULT_PERCENT_IMMUNITY;
@@ -209,8 +201,18 @@ export class AppComponent
             () => this.handleWindowResize()
         );
 
+        this.matches = [];
+        this.cachedMatches = [];
+        while (this.cachedMatches.length < this.maxNumMatches)
+        {
+            const match = new Match();
+            match.click.subscribe(match => {
+                this.handleClickMatch(match);
+            });
+            this.cachedMatches.push(match);
+        }
+
         this.handleRandomize();
-        this.populateMatches(DEFAULT_NUM_MATCHES);
 
         this.numMatchesInput.nativeElement.value = this.matches.length;
         this.ignitionRadiusInput.nativeElement.value = this.ignitionRadius;
@@ -225,6 +227,33 @@ export class AppComponent
         }, 100);
     }
 
+    get numMatchesShown() : number
+    {
+        return this.matches.length;
+    }
+
+    set numMatchesShown(value : number)
+    {
+        /* Remove/add match elements until we reach the target number */
+        while (this.matches.length > value)
+        {
+            this.matchArea.removeChild(
+                this.matches.pop().element
+            );
+        }
+
+        const rect = this.matchArea.getBoundingClientRect();
+
+        while (this.matches.length < value)
+        {
+            const match = this.cachedMatches[this.matches.length];
+            this.matches.push(match);
+            this.matchArea.appendChild(match.element);
+
+            match.placeElement(rect);
+        }
+    }
+
     get maxNumMatches() : number
     {
         return 200;
@@ -235,14 +264,9 @@ export class AppComponent
         return this._matchArea.nativeElement;
     }
 
-    get numMatches() : number
-    {
-        return this.matches.length;
-    }
-
     get numMatchesListPercent() : number
     {
-        return (100*this.numMatchesLit/this.numMatches)|0;
+        return (100*this.numMatchesLit/this.numMatchesShown)|0;
     }
 
     handleReset()
@@ -255,22 +279,19 @@ export class AppComponent
 
     handleRandomize()
     {
-        this.matchPositions = [];
-        for (let n = 0; n < this.maxNumMatches; n++)
-        {
-            this.matchPositions.push(
-                createRandomMatchPosition(this.matchPositions, MIN_MATCH_DIST, 5)
-            );
-        }
-
-        const num = this.matches.length;
-        this.populateMatches(0);
-        this.populateMatches(num);
+        const points = [];
+        this.cachedMatches.forEach(match => {
+            const point = createRandomMatchPosition(points, MIN_MATCH_DIST, 5);
+            points.push(point);
+            match.x = point.x;
+            match.y = point.y;
+        });
+        this.placeMatchElements();
     }
 
     handleNumMatchesChange(event)
     {
-        this.populateMatches(event.target.value);
+        this.numMatchesShown = event.target.value;
         this.handleReset();
     }
 
@@ -315,31 +336,6 @@ export class AppComponent
             },
             40
         );
-    }
-
-    populateMatches(target)
-    {
-        while (this.matches.length > target) {
-            const match = this.matches.pop();
-            this.matchArea.removeChild(match.element);
-        }
-        while (this.matches.length < target)
-        {
-            const point = this.matchPositions[this.matches.length];
-            const match = new Match(
-                point.x,
-                point.y,
-            );
-            this.matches.push(match);
-            this.matchArea.appendChild(match.element);
-
-            if (this.matches.length % 2 == 0) match.spent = true;
-
-            match.click.subscribe(match => {
-                this.handleClickMatch(match);
-            });
-        }
-        this.placeMatchElements();
     }
 
     placeMatchElements()
