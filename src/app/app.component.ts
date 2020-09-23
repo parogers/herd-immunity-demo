@@ -346,8 +346,15 @@ export class AppComponent
         });
     }
 
-    handlePercentImmunityChange(event)
+    handlePercentImmunityChange(value)
     {
-        this.percentImmunity = event.target.value;
+        this.percentImmunity = value;
+        this.matches.forEach(match => {
+            if (Math.random() < this.percentImmunity/100) {
+                match.spent = true;
+            } else {
+                match.spent = false;
+            }
+        });
     }
 }
