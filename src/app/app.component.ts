@@ -202,6 +202,7 @@ export class AppComponent
             () => this.handleWindowResize()
         );
 
+        this.immunityOrdering = [];
         this.matches = [];
         this.cachedMatches = [];
         while (this.cachedMatches.length < this.maxNumMatches)
@@ -255,6 +256,23 @@ export class AppComponent
 
             match.placeElement(rect);
         }
+
+        function shuffle(lst : any[]) : any[]
+        {
+            const copy = lst.slice();
+            const newList = [];
+
+            while (copy.length > 0)
+            {
+                const pos = (Math.random()*copy.length)|0;
+                newList.push(copy[pos]);
+                copy.splice(pos, 1);
+            }
+
+            return newList;
+        }
+        this.immunityOrdering = shuffle(this.matches);
+
         this.handlePercentImmunityChange(this.percentImmunity);
     }
 
@@ -354,12 +372,20 @@ export class AppComponent
     handlePercentImmunityChange(value)
     {
         this.percentImmunity = value;
-        this.matches.forEach(match => {
-            if (Math.random() < this.percentImmunity/100) {
-                match.spent = true;
-            } else {
-                match.spent = false;
-            }
-        });
+
+        if (!this.immunityOrdering) {
+            return;
+        }
+
+        let count = 0;
+        while (count/this.numMatchesShown < this.percentImmunity/100)
+        {
+            this.immunityOrdering[count++].spent = true;
+        }
+        while (count < this.immunityOrdering.length)
+        {
+            this.immunityOrdering[count++].spent = false;
+        }
+        this.handleReset();
     }
 }
