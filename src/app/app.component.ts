@@ -188,7 +188,6 @@ export class AppComponent
     @ViewChild('percentImmunityInput', { static: true })
     private percentImmunityInput;
 
-    immunityOrdering : Match[];
     cachedMatches : Match[];
     matches : Match[] = [];
     ignitionRadius = DEFAULT_IGNITION_RADIUS;
@@ -202,7 +201,6 @@ export class AppComponent
             () => this.handleWindowResize()
         );
 
-        this.immunityOrdering = [];
         this.matches = [];
         this.cachedMatches = [];
         while (this.cachedMatches.length < this.maxNumMatches)
@@ -271,8 +269,6 @@ export class AppComponent
 
             return newList;
         }
-        this.immunityOrdering = shuffle(this.matches);
-
         this.handlePercentImmunityChange(this.percentImmunity);
     }
 
@@ -373,19 +369,14 @@ export class AppComponent
     {
         this.percentImmunity = value;
 
-        if (!this.immunityOrdering) {
-            return;
-        }
-
-        let count = 0;
-        while (count/this.numMatchesShown < this.percentImmunity/100)
-        {
-            this.immunityOrdering[count++].spent = true;
-        }
-        while (count < this.immunityOrdering.length)
-        {
-            this.immunityOrdering[count++].spent = false;
-        }
-        this.handleReset();
+        let spent = 0;
+        this.matches.forEach((match, index) => {
+            if (spent/(index+1) < this.percentImmunity/100) {
+                match.spent = true;
+                spent++;
+            } else {
+                match.spent = false;
+            }
+        });
     }
 }
