@@ -29,6 +29,14 @@ body
         height: auto;
     }
 
+    & > img.spent-match
+    {
+        position: relative;
+        width: 100%;
+        height: auto;
+        display: none;
+    }
+
     & > img.flame
     {
         position: relative;
@@ -39,6 +47,16 @@ body
         transition: transform 0s ease-out, opacity 0s;
         transform: scale(0);
         opacity: 0;
+    }
+
+    &.spent > img.spent-match
+    {
+        display: inline-block;
+    }
+
+    &.spent > img.unlit-match
+    {
+        display: none;
     }
 
     &.lit > img.flame

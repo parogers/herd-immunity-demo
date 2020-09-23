@@ -25,7 +25,7 @@ const DEFAULT_PERCENT_IMMUNITY = 25;
 // This is intentionally set low just to prevent tight clustering/overlapping
 // of matches. Setting it too high will make the matches look artificially
 // spaced out and not random.
-const MIN_MATCH_DIST = 0.01;
+const MIN_MATCH_DIST = 0.02;
 
 
 function createMatchElement() : HTMLElement
@@ -37,11 +37,16 @@ function createMatchElement() : HTMLElement
     matchImg.classList.add('unlit-match');
     matchImg.src = 'assets/match.svg';
 
+    const spentImg = document.createElement('img');
+    spentImg.classList.add('spent-match');
+    spentImg.src = 'assets/spent-match.svg';
+
     const flameImg = document.createElement('img');
     flameImg.classList.add('flame');
     flameImg.src = 'assets/flame.svg';
 
     div.appendChild(matchImg);
+    div.appendChild(spentImg);
     div.appendChild(flameImg);
     return div;
 }
@@ -98,6 +103,7 @@ class Match
     element : HTMLElement;
     click : EventEmitter<any>;
     _lit : boolean = false;
+    _spent : boolean = false;
 
     constructor(
         public x : number,
@@ -110,6 +116,20 @@ class Match
         this.element.addEventListener('click', () => {
             this.click.emit(this);
         });
+    }
+
+    get spent() : boolean
+    {
+        return this._spent;
+    }
+
+    set spent(value : boolean)
+    {
+        if (value !== this._spent) {
+            this._spent = value;
+            if (value) this.element.classList.add('spent');
+            else this.element.classList.remove('spent');
+        }
     }
 
     get lit() : boolean
@@ -267,7 +287,7 @@ export class AppComponent
 
     handleClickMatch(match)
     {
-        if (match.lit) {
+        if (match.lit || match.spent) {
             return;
         }
 
@@ -312,6 +332,8 @@ export class AppComponent
             );
             this.matches.push(match);
             this.matchArea.appendChild(match.element);
+
+            if (this.matches.length % 2 == 0) match.spent = true;
 
             match.click.subscribe(match => {
                 this.handleClickMatch(match);
