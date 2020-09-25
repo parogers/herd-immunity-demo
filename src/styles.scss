@@ -46,8 +46,9 @@ body
         position: relative;
         width: 300%;
         height: auto;
-        transition: transform 0s ease-out;
+        transition: opacity 0s;
         transform: scale(0);
+        opacity: 0;
     }
 
     &.immune > img.person-immune
@@ -73,8 +74,9 @@ body
     &.sick > img.sickness
     {
         transform: scale(1);
+        opacity: 1;
         display: unset;
-        transition: transform 100ms ease-out;
+        transition: opacity 250ms;
     }
 
 }

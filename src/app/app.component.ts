@@ -360,7 +360,7 @@ export class AppComponent
                     }
                 });
             },
-            40
+            150
         );
     }
 
