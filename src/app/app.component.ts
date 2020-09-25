@@ -35,19 +35,19 @@ function createPersonElement() : HTMLElement
 
     const personImg = document.createElement('img');
     personImg.classList.add('person-vulnerable');
-    personImg.src = 'assets/match.svg';
+    personImg.src = 'assets/person-vulnerable.svg';
 
     const immuneImg = document.createElement('img');
     immuneImg.classList.add('person-immune');
-    immuneImg.src = 'assets/spent-match.svg';
+    immuneImg.src = 'assets/person-immune.svg';
 
-    const flameImg = document.createElement('img');
-    flameImg.classList.add('flame');
-    flameImg.src = 'assets/flame.svg';
+    const sicknessImg = document.createElement('img');
+    sicknessImg.classList.add('sickness');
+    sicknessImg.src = 'assets/sickness.svg';
 
+    div.appendChild(sicknessImg);
     div.appendChild(personImg);
     div.appendChild(immuneImg);
-    div.appendChild(flameImg);
     return div;
 }
 
@@ -270,6 +270,9 @@ export class AppComponent
             return newList;
         }
         this.handlePercentImmunityChange(this.percentImmunity);
+
+        this.people[0].sick = true;
+        this.people[0].immune = false;
     }
 
     get maxNumPeople() : number

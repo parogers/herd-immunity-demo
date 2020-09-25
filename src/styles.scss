@@ -18,31 +18,30 @@ body
      * width/height. A combination of techniques makes for a better appearance
      * across screen sizes. */
     width: calc(0.5rem + 1vmin);
-    height: calc(calc(0.5rem + 1vmin) * 4);
-    padding: 0.25em;
+    height: calc(calc(0.5rem + 1vmin) * 2.25);
+    padding: 0.1em;
     cursor: pointer;
 
-    & > img.person-vulnerable
+    outline: solid 1px;
+
+    & > img.person-vulnerable, & > img.person-immune
     {
         position: relative;
         width: 100%;
         height: auto;
+        top: -120%;
+        left: 70%;
     }
 
     & > img.person-immune
     {
-        position: relative;
-        width: 100%;
-        height: auto;
         display: none;
     }
 
-    & > img.flame
+    & > img.sickness
     {
         position: relative;
-        left: -40%;
-        top: -150%;
-        width: 180%;
+        width: 250%;
         height: auto;
         transition: transform 0s ease-out, opacity 0s;
         transform: scale(0);
@@ -59,7 +58,7 @@ body
         display: none;
     }
 
-    &.sick > img.flame
+    &.sick > img.sickness
     {
         opacity: 1;
         transform: scale(1);
