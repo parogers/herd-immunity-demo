@@ -22,15 +22,13 @@ body
     padding: 0.1em;
     cursor: pointer;
 
-    outline: solid 1px;
-
     & > img.person-vulnerable, & > img.person-immune
     {
         position: relative;
         width: 100%;
         height: auto;
-        top: -120%;
-        left: 70%;
+        top: -135%;
+        left: 100%;
     }
 
     & > img.person-immune
@@ -41,7 +39,7 @@ body
     & > img.sickness
     {
         position: relative;
-        width: 250%;
+        width: 300%;
         height: auto;
         transition: transform 0s ease-out, opacity 0s;
         transform: scale(0);
