@@ -104,7 +104,7 @@ class Person
     y : number = 0;
     element : HTMLElement;
     click : EventEmitter<any>;
-    _lit : boolean = false;
+    _sick : boolean = false;
     _spent : boolean = false;
 
     constructor()
@@ -131,18 +131,18 @@ class Person
         }
     }
 
-    get lit() : boolean
+    get sick() : boolean
     {
-        return this._lit;
+        return this._sick;
     }
 
-    set lit(value : boolean)
+    set sick(value : boolean)
     {
-        if (this._lit !== value)
+        if (this._sick !== value)
         {
-            this._lit = value;
-            if (value) this.element.classList.add('lit');
-            else this.element.classList.remove('lit');
+            this._sick = value;
+            if (value) this.element.classList.add('sick');
+            else this.element.classList.remove('sick');
         }
     }
 
@@ -192,7 +192,7 @@ export class AppComponent
     people : Person[] = [];
     ignitionRadius = DEFAULT_IGNITION_RADIUS;
     percentImmunity = DEFAULT_PERCENT_IMMUNITY;
-    numPeopleLit : number = 0;
+    numPeopleSick : number = 0;
     numPeopleImmune : number = 0;
 
     ngOnInit()
@@ -284,14 +284,14 @@ export class AppComponent
 
     get numPeopleListPercent() : number
     {
-        return (100*this.numPeopleLit/this.numPeopleShown)|0;
+        return (100*this.numPeopleSick/this.numPeopleShown)|0;
     }
 
     handleReset()
     {
-        this.numPeopleLit = 0;
+        this.numPeopleSick = 0;
         this.people.forEach(person => {
-            person.lit = false;
+            person.sick = false;
         });
     }
 
@@ -328,17 +328,17 @@ export class AppComponent
 
     handleClickPerson(person)
     {
-        if (person.lit || person.spent) {
+        if (person.sick || person.spent) {
             return;
         }
 
-        this.numPeopleLit++;
-        person.lit = true;
+        this.numPeopleSick++;
+        person.sick = true;
 
         // Collect a list of people to ignite near the given person
         const lightList = this.people.filter(other => {
             return (
-                !other.lit &&
+                !other.sick &&
                 person.distanceTo(other) < this.ignitionRadius/100.0
             );
         });
@@ -347,9 +347,10 @@ export class AppComponent
         setTimeout(
             () => {
                 lightList.forEach(other => {
-                    // Check lit here to we don't call handleClickPerson on
-                    // a person that's already been lit earlier in this loop.
-                    if (!other.lit) {
+                    // Check the sick flag here to we don't call handleClickPerson
+                    // on a person that's already been marked sick earlier in
+                    // this loop.
+                    if (!other.sick) {
                         this.handleClickPerson(other);
                     }
                 });
