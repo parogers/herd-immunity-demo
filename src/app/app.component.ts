@@ -45,9 +45,14 @@ function createPersonElement() : HTMLElement
     sicknessImg.classList.add('sickness');
     sicknessImg.src = 'assets/sickness.svg';
 
+    const sickImg = document.createElement('img');
+    sickImg.classList.add('person-sick');
+    sickImg.src = 'assets/person-sick.svg';
+
     div.appendChild(sicknessImg);
     div.appendChild(personImg);
     div.appendChild(immuneImg);
+    div.appendChild(sickImg);
     return div;
 }
 
@@ -270,9 +275,6 @@ export class AppComponent
             return newList;
         }
         this.handlePercentImmunityChange(this.percentImmunity);
-
-        this.people[0].sick = true;
-        this.people[0].immune = false;
     }
 
     get maxNumPeople() : number

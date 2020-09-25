@@ -22,7 +22,7 @@ body
     padding: 0.1em;
     cursor: pointer;
 
-    & > img.person-vulnerable, & > img.person-immune
+    img.person-vulnerable, img.person-immune, img.person-sick
     {
         position: relative;
         width: 100%;
@@ -31,19 +31,23 @@ body
         left: 100%;
     }
 
-    & > img.person-immune
+    img.person-immune
     {
         display: none;
     }
 
-    & > img.sickness
+    img.person-sick
+    {
+        display: none;
+    }
+
+    img.sickness
     {
         position: relative;
         width: 300%;
         height: auto;
-        transition: transform 0s ease-out, opacity 0s;
+        transition: transform 0s ease-out;
         transform: scale(0);
-        opacity: 0;
     }
 
     &.immune > img.person-immune
@@ -56,12 +60,21 @@ body
         display: none;
     }
 
+    &.sick > img.person-sick
+    {
+        display: unset;
+    }
+
+    &.sick > img.person-vulnerable
+    {
+        display: none;
+    }
+
     &.sick > img.sickness
     {
-        opacity: 1;
         transform: scale(1);
         display: unset;
-        transition: transform 200ms ease-out, opacity 100ms;
+        transition: transform 100ms ease-out;
     }
 
 }
