@@ -20,7 +20,7 @@ import { Component, EventEmitter, ViewChild } from '@angular/core';
 
 
 const DEFAULT_NUM_PEOPLE = 50;
-const DEFAULT_IGNITION_RADIUS = 10;
+const DEFAULT_SICKNESS_RADIUS = 10;
 const DEFAULT_PERCENT_IMMUNITY = 25;
 // This is intentionally set low just to prevent tight clustering/overlapping
 // of people. Setting it too high will make the people look artificially
@@ -182,15 +182,15 @@ export class AppComponent
     @ViewChild('numPeopleInput', { static: true})
     private numPeopleInput;
 
-    @ViewChild('ignitionRadiusInput', { static: true })
-    private ignitionRadiusInput;
+    @ViewChild('sicknessRadiusInput', { static: true })
+    private sicknessRadiusInput;
 
     @ViewChild('percentImmunityInput', { static: true })
     private percentImmunityInput;
 
     cachedPeople : Person[];
     people : Person[] = [];
-    ignitionRadius = DEFAULT_IGNITION_RADIUS;
+    sicknessRadius = DEFAULT_SICKNESS_RADIUS;
     percentImmunity = DEFAULT_PERCENT_IMMUNITY;
     numPeopleSick : number = 0;
     numPeopleImmune : number = 0;
@@ -213,7 +213,7 @@ export class AppComponent
             this.cachedPeople.push(person);
         }
 
-        this.ignitionRadiusInput.nativeElement.value = this.ignitionRadius;
+        this.sicknessRadiusInput.nativeElement.value = this.sicknessRadius;
         this.percentImmunityInput.nativeElement.value = this.percentImmunity;
 
         this.handleRandomize();
@@ -318,9 +318,9 @@ export class AppComponent
         this.handleReset();
     }
 
-    handleIgnitionRadiusChange(event)
+    handleSicknessRadiusChange(event)
     {
-        this.ignitionRadius = event.target.value;
+        this.sicknessRadius = event.target.value;
         this.handleReset();
     }
 
@@ -342,7 +342,7 @@ export class AppComponent
         const lightList = this.people.filter(other => {
             return (
                 !other.sick &&
-                person.distanceTo(other) < this.ignitionRadius/100.0
+                person.distanceTo(other) < this.sicknessRadius/100.0
             );
         });
 

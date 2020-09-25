@@ -13,7 +13,7 @@
         </div>
 
         <div>
-            <label for="people">Immunity <span class="immunity">({{ percentImmunity }}%)</span></label>
+            <label for="people">% Immune <span class="immunity">({{ percentImmunity }})</span></label>
             <input #percentImmunityInput name="immunity" type="range" min="0" max="100" (change)="handlePercentImmunityChange($event.target.value)">
         </div>
 
@@ -23,8 +23,8 @@
         </div>
 
         <div>
-            <label for="ignition">Ignition radius ({{ ignitionRadius }})</label>
-            <input #ignitionRadiusInput name="ignition" type="range" min="0" max="50" (input)="handleIgnitionRadiusChange($event)">
+            <label for="ignition">Transmission ({{ sicknessRadius }})</label>
+            <input #sicknessRadiusInput name="ignition" type="range" min="0" max="50" (input)="handleSicknessRadiusChange($event)">
         </div>
 
         <div class="buttons">
