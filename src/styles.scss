@@ -6,65 +6,77 @@ body
     margin: 0;
 }
 
-.match
+.person
 {
     position: absolute;
     display: inline-block;
-    /* Calculate the match size as a combination of the document font size, and
-     * a percent of the screen width/height. If the match size were a function
+    /* Calculate the person size as a combination of the document font size, and
+     * a percent of the screen width/height. If the person size were a function
      * font size only, they wouldn't scale properly between large and small
      * screens. (they would either look too big on small screens, or too small
-     * on large screens) Likewise if the match size were a function of screen
+     * on large screens) Likewise if the person size were a function of screen
      * width/height. A combination of techniques makes for a better appearance
      * across screen sizes. */
     width: calc(0.5rem + 1vmin);
-    height: calc(calc(0.5rem + 1vmin) * 4);
-    padding: 0.25em;
+    height: calc(calc(0.5rem + 1vmin) * 2.25);
+    padding: 0.1em;
     cursor: pointer;
 
-    & > img.unlit-match
+    img.person-vulnerable, img.person-immune, img.person-sick
     {
         position: relative;
         width: 100%;
         height: auto;
+        top: -135%;
+        left: 100%;
     }
 
-    & > img.spent-match
+    img.person-immune
     {
-        position: relative;
-        width: 100%;
-        height: auto;
         display: none;
     }
 
-    & > img.flame
+    img.person-sick
+    {
+        display: none;
+    }
+
+    img.sickness
     {
         position: relative;
-        left: -40%;
-        top: -150%;
-        width: 180%;
+        width: 300%;
         height: auto;
-        transition: transform 0s ease-out, opacity 0s;
+        transition: opacity 0s;
         transform: scale(0);
         opacity: 0;
     }
 
-    &.spent > img.spent-match
+    &.immune > img.person-immune
     {
         display: inline-block;
     }
 
-    &.spent > img.unlit-match
+    &.immune > img.person-vulnerable
     {
         display: none;
     }
 
-    &.lit > img.flame
+    &.sick > img.person-sick
     {
-        opacity: 1;
-        transform: scale(1);
         display: unset;
-        transition: transform 200ms ease-out, opacity 100ms;
+    }
+
+    &.sick > img.person-vulnerable
+    {
+        display: none;
+    }
+
+    &.sick > img.sickness
+    {
+        transform: scale(1);
+        opacity: 1;
+        display: unset;
+        transition: opacity 250ms;
     }
 
 }

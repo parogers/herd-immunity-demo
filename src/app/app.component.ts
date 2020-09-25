@@ -19,35 +19,40 @@
 import { Component, EventEmitter, ViewChild } from '@angular/core';
 
 
-const DEFAULT_NUM_MATCHES = 50;
-const DEFAULT_IGNITION_RADIUS = 10;
+const DEFAULT_NUM_PEOPLE = 50;
+const DEFAULT_SICKNESS_RADIUS = 10;
 const DEFAULT_PERCENT_IMMUNITY = 25;
 // This is intentionally set low just to prevent tight clustering/overlapping
-// of matches. Setting it too high will make the matches look artificially
+// of people. Setting it too high will make the people look artificially
 // spaced out and not random.
-const MIN_MATCH_DIST = 0.02;
+const MIN_PERSON_DIST = 0.02;
 
 
-function createMatchElement() : HTMLElement
+function createPersonElement() : HTMLElement
 {
     const div = document.createElement('div');
-    div.classList.add('match');
+    div.classList.add('person');
 
-    const matchImg = document.createElement('img');
-    matchImg.classList.add('unlit-match');
-    matchImg.src = 'assets/match.svg';
+    const personImg = document.createElement('img');
+    personImg.classList.add('person-vulnerable');
+    personImg.src = 'assets/person-vulnerable.svg';
 
-    const spentImg = document.createElement('img');
-    spentImg.classList.add('spent-match');
-    spentImg.src = 'assets/spent-match.svg';
+    const immuneImg = document.createElement('img');
+    immuneImg.classList.add('person-immune');
+    immuneImg.src = 'assets/person-immune.svg';
 
-    const flameImg = document.createElement('img');
-    flameImg.classList.add('flame');
-    flameImg.src = 'assets/flame.svg';
+    const sicknessImg = document.createElement('img');
+    sicknessImg.classList.add('sickness');
+    sicknessImg.src = 'assets/sickness.svg';
 
-    div.appendChild(matchImg);
-    div.appendChild(spentImg);
-    div.appendChild(flameImg);
+    const sickImg = document.createElement('img');
+    sickImg.classList.add('person-sick');
+    sickImg.src = 'assets/person-sick.svg';
+
+    div.appendChild(sicknessImg);
+    div.appendChild(personImg);
+    div.appendChild(immuneImg);
+    div.appendChild(sickImg);
     return div;
 }
 
@@ -56,8 +61,8 @@ function createMatchElement() : HTMLElement
  * given list of points. The arg 'tries' is the number of attempts to make
  * before giving up and just returning a point chosen at random.
  */
-function createRandomMatchPosition(
-    matchPosList : Point[],
+function createRandomPersonPosition(
+    personPosList : Point[],
     minDist : number,
     tries : number
 ) : Point
@@ -68,17 +73,17 @@ function createRandomMatchPosition(
 
     function randomPoint()
     {
-        // Magic values to take into account the tall/skinny shape of the match,
-        // so that matches don't get cut off if near the margins.
+        // Magic values to take into account the tall/skinny shape of the person,
+        // so that people don't get cut off if near the margins.
         return {
             x: uniform(0, 0.95),
             y: uniform(0, 0.86),
         };
     }
 
-    function closeTo(matchPosList : Point[], point : Point, dist : number)
+    function closeTo(personPosList : Point[], point : Point, dist : number)
     {
-        return matchPosList.some(other => {
+        return personPosList.some(other => {
             const measured = Math.sqrt(
                 (other.x - point.x) ** 2 +
                 (other.y - point.y) ** 2
@@ -90,7 +95,7 @@ function createRandomMatchPosition(
     for (let n = 0; n < tries; n++)
     {
         const point = randomPoint();
-        if (!closeTo(matchPosList, point, minDist)) {
+        if (!closeTo(personPosList, point, minDist)) {
             return point;
         }
     }
@@ -98,51 +103,51 @@ function createRandomMatchPosition(
     return randomPoint();
 }
 
-class Match
+class Person
 {
     x : number = 0;
     y : number = 0;
     element : HTMLElement;
     click : EventEmitter<any>;
-    _lit : boolean = false;
-    _spent : boolean = false;
+    _sick : boolean = false;
+    _immune : boolean = false;
 
     constructor()
     {
         this.click = new EventEmitter();
 
-        this.element = createMatchElement();
+        this.element = createPersonElement();
         this.element.addEventListener('click', () => {
             this.click.emit(this);
         });
     }
 
-    get spent() : boolean
+    get immune() : boolean
     {
-        return this._spent;
+        return this._immune;
     }
 
-    set spent(value : boolean)
+    set immune(value : boolean)
     {
-        if (value !== this._spent) {
-            this._spent = value;
-            if (value) this.element.classList.add('spent');
-            else this.element.classList.remove('spent');
+        if (value !== this._immune) {
+            this._immune = value;
+            if (value) this.element.classList.add('immune');
+            else this.element.classList.remove('immune');
         }
     }
 
-    get lit() : boolean
+    get sick() : boolean
     {
-        return this._lit;
+        return this._sick;
     }
 
-    set lit(value : boolean)
+    set sick(value : boolean)
     {
-        if (this._lit !== value)
+        if (this._sick !== value)
         {
-            this._lit = value;
-            if (value) this.element.classList.add('lit');
-            else this.element.classList.remove('lit');
+            this._sick = value;
+            if (value) this.element.classList.add('sick');
+            else this.element.classList.remove('sick');
         }
     }
 
@@ -153,7 +158,7 @@ class Match
         this.element.style.zIndex = '' + ((this.y*rect.height)|0);
     }
 
-    distanceTo(other : Match)
+    distanceTo(other : Person)
     {
         return Math.sqrt(
             (other.x - this.x) ** 2 +
@@ -176,24 +181,24 @@ interface Point
 })
 export class AppComponent
 {
-    @ViewChild('matchArea', { static: true })
-    private _matchArea;
+    @ViewChild('personArea', { static: true })
+    private _personArea;
 
-    @ViewChild('numMatchesInput', { static: true})
-    private numMatchesInput;
+    @ViewChild('numPeopleInput', { static: true})
+    private numPeopleInput;
 
-    @ViewChild('ignitionRadiusInput', { static: true })
-    private ignitionRadiusInput;
+    @ViewChild('sicknessRadiusInput', { static: true })
+    private sicknessRadiusInput;
 
     @ViewChild('percentImmunityInput', { static: true })
     private percentImmunityInput;
 
-    cachedMatches : Match[];
-    matches : Match[] = [];
-    ignitionRadius = DEFAULT_IGNITION_RADIUS;
+    cachedPeople : Person[];
+    people : Person[] = [];
+    sicknessRadius = DEFAULT_SICKNESS_RADIUS;
     percentImmunity = DEFAULT_PERCENT_IMMUNITY;
-    numMatchesLit : number = 0;
-    numMatchesImmune : number = 0;
+    numPeopleSick : number = 0;
+    numPeopleImmune : number = 0;
 
     ngOnInit()
     {
@@ -202,58 +207,57 @@ export class AppComponent
             () => this.handleWindowResize()
         );
 
-        this.matches = [];
-        this.cachedMatches = [];
-        while (this.cachedMatches.length < this.maxNumMatches)
+        this.people = [];
+        this.cachedPeople = [];
+        while (this.cachedPeople.length < this.maxNumPeople)
         {
-            const match = new Match();
-            match.click.subscribe(match => {
-                this.handleClickMatch(match);
+            const person = new Person();
+            person.click.subscribe(person => {
+                this.handleClickPerson(person);
             });
-            this.cachedMatches.push(match);
+            this.cachedPeople.push(person);
         }
 
-        // this.numMatchesInput.nativeElement.value = ;
-        this.ignitionRadiusInput.nativeElement.value = this.ignitionRadius;
+        this.sicknessRadiusInput.nativeElement.value = this.sicknessRadius;
         this.percentImmunityInput.nativeElement.value = this.percentImmunity;
 
         this.handleRandomize();
 
-        this.numMatchesShown = DEFAULT_NUM_MATCHES;
+        this.numPeopleShown = DEFAULT_NUM_PEOPLE;
 
-        /* Recalculate the match placement after a short time. This is a hack
-         * to fix a bug that appears while in portrait mode - the match area
+        /* Recalculate the person placement after a short time. This is a hack
+         * to fix a bug that appears while in portrait mode - the person area
          * gets resized after ngOnInit (probably flexbox related) and this
          * code doesn't catch that. */
         setTimeout(() => {
-            this.placeMatchElements();
+            this.placePersonElements();
         }, 100);
     }
 
-    get numMatchesShown() : number
+    get numPeopleShown() : number
     {
-        return this.matches.length;
+        return this.people.length;
     }
 
-    set numMatchesShown(value : number)
+    set numPeopleShown(value : number)
     {
-        /* Remove/add match elements until we reach the target number */
-        while (this.matches.length > value)
+        /* Remove/add person elements until we reach the target number */
+        while (this.people.length > value)
         {
-            this.matchArea.removeChild(
-                this.matches.pop().element
+            this.personArea.removeChild(
+                this.people.pop().element
             );
         }
 
-        const rect = this.matchArea.getBoundingClientRect();
+        const rect = this.personArea.getBoundingClientRect();
 
-        while (this.matches.length < value)
+        while (this.people.length < value)
         {
-            const match = this.cachedMatches[this.matches.length];
-            this.matches.push(match);
-            this.matchArea.appendChild(match.element);
+            const person = this.cachedPeople[this.people.length];
+            this.people.push(person);
+            this.personArea.appendChild(person.element);
 
-            match.placeElement(rect);
+            person.placeElement(rect);
         }
 
         function shuffle(lst : any[]) : any[]
@@ -273,74 +277,74 @@ export class AppComponent
         this.handlePercentImmunityChange(this.percentImmunity);
     }
 
-    get maxNumMatches() : number
+    get maxNumPeople() : number
     {
         return 200;
     }
 
-    get matchArea() : HTMLElement
+    get personArea() : HTMLElement
     {
-        return this._matchArea.nativeElement;
+        return this._personArea.nativeElement;
     }
 
-    get numMatchesListPercent() : number
+    get numPeopleListPercent() : number
     {
-        return (100*this.numMatchesLit/this.numMatchesShown)|0;
+        return (100*this.numPeopleSick/this.numPeopleShown)|0;
     }
 
     handleReset()
     {
-        this.numMatchesLit = 0;
-        this.matches.forEach(match => {
-            match.lit = false;
+        this.numPeopleSick = 0;
+        this.people.forEach(person => {
+            person.sick = false;
         });
     }
 
     handleRandomize()
     {
         const points = [];
-        this.cachedMatches.forEach(match => {
-            const point = createRandomMatchPosition(points, MIN_MATCH_DIST, 5);
+        this.cachedPeople.forEach(person => {
+            const point = createRandomPersonPosition(points, MIN_PERSON_DIST, 5);
             points.push(point);
-            match.x = point.x;
-            match.y = point.y;
+            person.x = point.x;
+            person.y = point.y;
         });
         this.handleReset();
-        this.placeMatchElements();
+        this.placePersonElements();
         this.handlePercentImmunityChange(this.percentImmunity);
     }
 
-    handleNumMatchesChange(event)
+    handleNumPeopleChange(event)
     {
-        this.numMatchesShown = event.target.value;
+        this.numPeopleShown = event.target.value;
         this.handleReset();
     }
 
-    handleIgnitionRadiusChange(event)
+    handleSicknessRadiusChange(event)
     {
-        this.ignitionRadius = event.target.value;
+        this.sicknessRadius = event.target.value;
         this.handleReset();
     }
 
     handleWindowResize()
     {
-        this.placeMatchElements();
+        this.placePersonElements();
     }
 
-    handleClickMatch(match)
+    handleClickPerson(person)
     {
-        if (match.lit || match.spent) {
+        if (person.sick || person.immune) {
             return;
         }
 
-        this.numMatchesLit++;
-        match.lit = true;
+        this.numPeopleSick++;
+        person.sick = true;
 
-        // Collect a list of matches to ignite near the given match
-        const lightList = this.matches.filter(other => {
+        // Collect a list of people to ignite near the given person
+        const lightList = this.people.filter(other => {
             return (
-                !other.lit &&
-                match.distanceTo(other) < this.ignitionRadius/100.0
+                !other.sick &&
+                person.distanceTo(other) < this.sicknessRadius/100.0
             );
         });
 
@@ -348,22 +352,23 @@ export class AppComponent
         setTimeout(
             () => {
                 lightList.forEach(other => {
-                    // Check lit here to we don't call handleClickMatch on
-                    // a match that's already been lit earlier in this loop.
-                    if (!other.lit) {
-                        this.handleClickMatch(other);
+                    // Check the sick flag here to we don't call handleClickPerson
+                    // on a person that's already been marked sick earlier in
+                    // this loop.
+                    if (!other.sick) {
+                        this.handleClickPerson(other);
                     }
                 });
             },
-            40
+            150
         );
     }
 
-    placeMatchElements()
+    placePersonElements()
     {
-        const rect = this.matchArea.getBoundingClientRect();
-        this.matches.forEach(match => {
-            match.placeElement(rect);
+        const rect = this.personArea.getBoundingClientRect();
+        this.people.forEach(person => {
+            person.placeElement(rect);
         });
     }
 
@@ -371,15 +376,15 @@ export class AppComponent
     {
         this.percentImmunity = value;
 
-        this.numMatchesImmune = 0;
-        let spent = 0;
-        this.matches.forEach((match, index) => {
-            if (spent/(index+1) < this.percentImmunity/100) {
-                match.spent = true;
-                spent++;
-                this.numMatchesImmune++;
+        this.numPeopleImmune = 0;
+        let immune = 0;
+        this.people.forEach((person, index) => {
+            if (immune/(index+1) < this.percentImmunity/100) {
+                person.immune = true;
+                immune++;
+                this.numPeopleImmune++;
             } else {
-                match.spent = false;
+                person.immune = false;
             }
         });
         this.handleReset();

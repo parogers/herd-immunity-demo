@@ -1,30 +1,30 @@
 <div class="content">
 
-    <div class="match-area" #matchArea>
+    <div class="person-area" #personArea>
     </div>
 
     <div class="controls">
         <div>
-            Matches lit: {{ numMatchesLit }} ({{ numMatchesListPercent }}%)
+            People sick: {{ numPeopleSick }} ({{ numPeopleListPercent }}%)
         </div>
 
         <div>
-            Matches immune: {{ numMatchesImmune }}
+            People immune: {{ numPeopleImmune }}
         </div>
 
         <div>
-            <label for="matches">Immunity <span class="immunity">({{ percentImmunity }}%)</span></label>
+            <label for="people">% Immune <span class="immunity">({{ percentImmunity }})</span></label>
             <input #percentImmunityInput name="immunity" type="range" min="0" max="100" (change)="handlePercentImmunityChange($event.target.value)">
         </div>
 
         <div>
-            <label for="matches">Number of matches <span class="num-matches">({{ numMatchesShown }})</span></label>
-            <input #numMatchesInput name="matches" type="range" min="1" max="{{ maxNumMatches }}" (input)="handleNumMatchesChange($event)">
+            <label for="people">Number of people <span class="num-people">({{ numPeopleShown }})</span></label>
+            <input #numPeopleInput name="people" type="range" min="1" max="{{ maxNumPeople }}" (input)="handleNumPeopleChange($event)">
         </div>
 
         <div>
-            <label for="ignition">Ignition radius ({{ ignitionRadius }})</label>
-            <input #ignitionRadiusInput name="ignition" type="range" min="0" max="50" (input)="handleIgnitionRadiusChange($event)">
+            <label for="ignition">Transmission ({{ sicknessRadius }})</label>
+            <input #sicknessRadiusInput name="ignition" type="range" min="0" max="50" (input)="handleSicknessRadiusChange($event)">
         </div>
 
         <div class="buttons">
