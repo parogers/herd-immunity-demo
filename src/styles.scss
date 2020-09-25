@@ -49,12 +49,12 @@ body
         opacity: 0;
     }
 
-    &.spent > img.person-immune
+    &.immune > img.person-immune
     {
         display: inline-block;
     }
 
-    &.spent > img.person-vulnerable
+    &.immune > img.person-vulnerable
     {
         display: none;
     }

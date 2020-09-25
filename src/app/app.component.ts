@@ -37,16 +37,16 @@ function createPersonElement() : HTMLElement
     personImg.classList.add('person-vulnerable');
     personImg.src = 'assets/match.svg';
 
-    const spentImg = document.createElement('img');
-    spentImg.classList.add('person-immune');
-    spentImg.src = 'assets/spent-match.svg';
+    const immuneImg = document.createElement('img');
+    immuneImg.classList.add('person-immune');
+    immuneImg.src = 'assets/spent-match.svg';
 
     const flameImg = document.createElement('img');
     flameImg.classList.add('flame');
     flameImg.src = 'assets/flame.svg';
 
     div.appendChild(personImg);
-    div.appendChild(spentImg);
+    div.appendChild(immuneImg);
     div.appendChild(flameImg);
     return div;
 }
@@ -105,7 +105,7 @@ class Person
     element : HTMLElement;
     click : EventEmitter<any>;
     _sick : boolean = false;
-    _spent : boolean = false;
+    _immune : boolean = false;
 
     constructor()
     {
@@ -117,17 +117,17 @@ class Person
         });
     }
 
-    get spent() : boolean
+    get immune() : boolean
     {
-        return this._spent;
+        return this._immune;
     }
 
-    set spent(value : boolean)
+    set immune(value : boolean)
     {
-        if (value !== this._spent) {
-            this._spent = value;
-            if (value) this.element.classList.add('spent');
-            else this.element.classList.remove('spent');
+        if (value !== this._immune) {
+            this._immune = value;
+            if (value) this.element.classList.add('immune');
+            else this.element.classList.remove('immune');
         }
     }
 
@@ -328,7 +328,7 @@ export class AppComponent
 
     handleClickPerson(person)
     {
-        if (person.sick || person.spent) {
+        if (person.sick || person.immune) {
             return;
         }
 
@@ -372,14 +372,14 @@ export class AppComponent
         this.percentImmunity = value;
 
         this.numPeopleImmune = 0;
-        let spent = 0;
+        let immune = 0;
         this.people.forEach((person, index) => {
-            if (spent/(index+1) < this.percentImmunity/100) {
-                person.spent = true;
-                spent++;
+            if (immune/(index+1) < this.percentImmunity/100) {
+                person.immune = true;
+                immune++;
                 this.numPeopleImmune++;
             } else {
-                person.spent = false;
+                person.immune = false;
             }
         });
         this.handleReset();
