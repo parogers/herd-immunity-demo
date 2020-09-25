@@ -19,33 +19,33 @@
 import { Component, EventEmitter, ViewChild } from '@angular/core';
 
 
-const DEFAULT_NUM_MATCHES = 50;
+const DEFAULT_NUM_PEOPLE = 50;
 const DEFAULT_IGNITION_RADIUS = 10;
 const DEFAULT_PERCENT_IMMUNITY = 25;
 // This is intentionally set low just to prevent tight clustering/overlapping
-// of matches. Setting it too high will make the matches look artificially
+// of people. Setting it too high will make the people look artificially
 // spaced out and not random.
-const MIN_MATCH_DIST = 0.02;
+const MIN_PERSON_DIST = 0.02;
 
 
-function createMatchElement() : HTMLElement
+function createPersonElement() : HTMLElement
 {
     const div = document.createElement('div');
-    div.classList.add('match');
+    div.classList.add('person');
 
-    const matchImg = document.createElement('img');
-    matchImg.classList.add('unlit-match');
-    matchImg.src = 'assets/match.svg';
+    const personImg = document.createElement('img');
+    personImg.classList.add('person-vulnerable');
+    personImg.src = 'assets/match.svg';
 
     const spentImg = document.createElement('img');
-    spentImg.classList.add('spent-match');
+    spentImg.classList.add('person-immune');
     spentImg.src = 'assets/spent-match.svg';
 
     const flameImg = document.createElement('img');
     flameImg.classList.add('flame');
     flameImg.src = 'assets/flame.svg';
 
-    div.appendChild(matchImg);
+    div.appendChild(personImg);
     div.appendChild(spentImg);
     div.appendChild(flameImg);
     return div;
@@ -56,8 +56,8 @@ function createMatchElement() : HTMLElement
  * given list of points. The arg 'tries' is the number of attempts to make
  * before giving up and just returning a point chosen at random.
  */
-function createRandomMatchPosition(
-    matchPosList : Point[],
+function createRandomPersonPosition(
+    personPosList : Point[],
     minDist : number,
     tries : number
 ) : Point
@@ -68,17 +68,17 @@ function createRandomMatchPosition(
 
     function randomPoint()
     {
-        // Magic values to take into account the tall/skinny shape of the match,
-        // so that matches don't get cut off if near the margins.
+        // Magic values to take into account the tall/skinny shape of the person,
+        // so that people don't get cut off if near the margins.
         return {
             x: uniform(0, 0.95),
             y: uniform(0, 0.86),
         };
     }
 
-    function closeTo(matchPosList : Point[], point : Point, dist : number)
+    function closeTo(personPosList : Point[], point : Point, dist : number)
     {
-        return matchPosList.some(other => {
+        return personPosList.some(other => {
             const measured = Math.sqrt(
                 (other.x - point.x) ** 2 +
                 (other.y - point.y) ** 2
@@ -90,7 +90,7 @@ function createRandomMatchPosition(
     for (let n = 0; n < tries; n++)
     {
         const point = randomPoint();
-        if (!closeTo(matchPosList, point, minDist)) {
+        if (!closeTo(personPosList, point, minDist)) {
             return point;
         }
     }
@@ -98,7 +98,7 @@ function createRandomMatchPosition(
     return randomPoint();
 }
 
-class Match
+class Person
 {
     x : number = 0;
     y : number = 0;
@@ -111,7 +111,7 @@ class Match
     {
         this.click = new EventEmitter();
 
-        this.element = createMatchElement();
+        this.element = createPersonElement();
         this.element.addEventListener('click', () => {
             this.click.emit(this);
         });
@@ -153,7 +153,7 @@ class Match
         this.element.style.zIndex = '' + ((this.y*rect.height)|0);
     }
 
-    distanceTo(other : Match)
+    distanceTo(other : Person)
     {
         return Math.sqrt(
             (other.x - this.x) ** 2 +
@@ -176,11 +176,11 @@ interface Point
 })
 export class AppComponent
 {
-    @ViewChild('matchArea', { static: true })
-    private _matchArea;
+    @ViewChild('personArea', { static: true })
+    private _personArea;
 
-    @ViewChild('numMatchesInput', { static: true})
-    private numMatchesInput;
+    @ViewChild('numPeopleInput', { static: true})
+    private numPeopleInput;
 
     @ViewChild('ignitionRadiusInput', { static: true })
     private ignitionRadiusInput;
@@ -188,12 +188,12 @@ export class AppComponent
     @ViewChild('percentImmunityInput', { static: true })
     private percentImmunityInput;
 
-    cachedMatches : Match[];
-    matches : Match[] = [];
+    cachedPeople : Person[];
+    people : Person[] = [];
     ignitionRadius = DEFAULT_IGNITION_RADIUS;
     percentImmunity = DEFAULT_PERCENT_IMMUNITY;
-    numMatchesLit : number = 0;
-    numMatchesImmune : number = 0;
+    numPeopleLit : number = 0;
+    numPeopleImmune : number = 0;
 
     ngOnInit()
     {
@@ -202,58 +202,57 @@ export class AppComponent
             () => this.handleWindowResize()
         );
 
-        this.matches = [];
-        this.cachedMatches = [];
-        while (this.cachedMatches.length < this.maxNumMatches)
+        this.people = [];
+        this.cachedPeople = [];
+        while (this.cachedPeople.length < this.maxNumPeople)
         {
-            const match = new Match();
-            match.click.subscribe(match => {
-                this.handleClickMatch(match);
+            const person = new Person();
+            person.click.subscribe(person => {
+                this.handleClickPerson(person);
             });
-            this.cachedMatches.push(match);
+            this.cachedPeople.push(person);
         }
 
-        // this.numMatchesInput.nativeElement.value = ;
         this.ignitionRadiusInput.nativeElement.value = this.ignitionRadius;
         this.percentImmunityInput.nativeElement.value = this.percentImmunity;
 
         this.handleRandomize();
 
-        this.numMatchesShown = DEFAULT_NUM_MATCHES;
+        this.numPeopleShown = DEFAULT_NUM_PEOPLE;
 
-        /* Recalculate the match placement after a short time. This is a hack
-         * to fix a bug that appears while in portrait mode - the match area
+        /* Recalculate the person placement after a short time. This is a hack
+         * to fix a bug that appears while in portrait mode - the person area
          * gets resized after ngOnInit (probably flexbox related) and this
          * code doesn't catch that. */
         setTimeout(() => {
-            this.placeMatchElements();
+            this.placePersonElements();
         }, 100);
     }
 
-    get numMatchesShown() : number
+    get numPeopleShown() : number
     {
-        return this.matches.length;
+        return this.people.length;
     }
 
-    set numMatchesShown(value : number)
+    set numPeopleShown(value : number)
     {
-        /* Remove/add match elements until we reach the target number */
-        while (this.matches.length > value)
+        /* Remove/add person elements until we reach the target number */
+        while (this.people.length > value)
         {
-            this.matchArea.removeChild(
-                this.matches.pop().element
+            this.personArea.removeChild(
+                this.people.pop().element
             );
         }
 
-        const rect = this.matchArea.getBoundingClientRect();
+        const rect = this.personArea.getBoundingClientRect();
 
-        while (this.matches.length < value)
+        while (this.people.length < value)
         {
-            const match = this.cachedMatches[this.matches.length];
-            this.matches.push(match);
-            this.matchArea.appendChild(match.element);
+            const person = this.cachedPeople[this.people.length];
+            this.people.push(person);
+            this.personArea.appendChild(person.element);
 
-            match.placeElement(rect);
+            person.placeElement(rect);
         }
 
         function shuffle(lst : any[]) : any[]
@@ -273,46 +272,46 @@ export class AppComponent
         this.handlePercentImmunityChange(this.percentImmunity);
     }
 
-    get maxNumMatches() : number
+    get maxNumPeople() : number
     {
         return 200;
     }
 
-    get matchArea() : HTMLElement
+    get personArea() : HTMLElement
     {
-        return this._matchArea.nativeElement;
+        return this._personArea.nativeElement;
     }
 
-    get numMatchesListPercent() : number
+    get numPeopleListPercent() : number
     {
-        return (100*this.numMatchesLit/this.numMatchesShown)|0;
+        return (100*this.numPeopleLit/this.numPeopleShown)|0;
     }
 
     handleReset()
     {
-        this.numMatchesLit = 0;
-        this.matches.forEach(match => {
-            match.lit = false;
+        this.numPeopleLit = 0;
+        this.people.forEach(person => {
+            person.lit = false;
         });
     }
 
     handleRandomize()
     {
         const points = [];
-        this.cachedMatches.forEach(match => {
-            const point = createRandomMatchPosition(points, MIN_MATCH_DIST, 5);
+        this.cachedPeople.forEach(person => {
+            const point = createRandomPersonPosition(points, MIN_PERSON_DIST, 5);
             points.push(point);
-            match.x = point.x;
-            match.y = point.y;
+            person.x = point.x;
+            person.y = point.y;
         });
         this.handleReset();
-        this.placeMatchElements();
+        this.placePersonElements();
         this.handlePercentImmunityChange(this.percentImmunity);
     }
 
-    handleNumMatchesChange(event)
+    handleNumPeopleChange(event)
     {
-        this.numMatchesShown = event.target.value;
+        this.numPeopleShown = event.target.value;
         this.handleReset();
     }
 
@@ -324,23 +323,23 @@ export class AppComponent
 
     handleWindowResize()
     {
-        this.placeMatchElements();
+        this.placePersonElements();
     }
 
-    handleClickMatch(match)
+    handleClickPerson(person)
     {
-        if (match.lit || match.spent) {
+        if (person.lit || person.spent) {
             return;
         }
 
-        this.numMatchesLit++;
-        match.lit = true;
+        this.numPeopleLit++;
+        person.lit = true;
 
-        // Collect a list of matches to ignite near the given match
-        const lightList = this.matches.filter(other => {
+        // Collect a list of people to ignite near the given person
+        const lightList = this.people.filter(other => {
             return (
                 !other.lit &&
-                match.distanceTo(other) < this.ignitionRadius/100.0
+                person.distanceTo(other) < this.ignitionRadius/100.0
             );
         });
 
@@ -348,10 +347,10 @@ export class AppComponent
         setTimeout(
             () => {
                 lightList.forEach(other => {
-                    // Check lit here to we don't call handleClickMatch on
-                    // a match that's already been lit earlier in this loop.
+                    // Check lit here to we don't call handleClickPerson on
+                    // a person that's already been lit earlier in this loop.
                     if (!other.lit) {
-                        this.handleClickMatch(other);
+                        this.handleClickPerson(other);
                     }
                 });
             },
@@ -359,11 +358,11 @@ export class AppComponent
         );
     }
 
-    placeMatchElements()
+    placePersonElements()
     {
-        const rect = this.matchArea.getBoundingClientRect();
-        this.matches.forEach(match => {
-            match.placeElement(rect);
+        const rect = this.personArea.getBoundingClientRect();
+        this.people.forEach(person => {
+            person.placeElement(rect);
         });
     }
 
@@ -371,15 +370,15 @@ export class AppComponent
     {
         this.percentImmunity = value;
 
-        this.numMatchesImmune = 0;
+        this.numPeopleImmune = 0;
         let spent = 0;
-        this.matches.forEach((match, index) => {
+        this.people.forEach((person, index) => {
             if (spent/(index+1) < this.percentImmunity/100) {
-                match.spent = true;
+                person.spent = true;
                 spent++;
-                this.numMatchesImmune++;
+                this.numPeopleImmune++;
             } else {
-                match.spent = false;
+                person.spent = false;
             }
         });
         this.handleReset();

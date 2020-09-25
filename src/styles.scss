@@ -6,15 +6,15 @@ body
     margin: 0;
 }
 
-.match
+.person
 {
     position: absolute;
     display: inline-block;
-    /* Calculate the match size as a combination of the document font size, and
-     * a percent of the screen width/height. If the match size were a function
+    /* Calculate the person size as a combination of the document font size, and
+     * a percent of the screen width/height. If the person size were a function
      * font size only, they wouldn't scale properly between large and small
      * screens. (they would either look too big on small screens, or too small
-     * on large screens) Likewise if the match size were a function of screen
+     * on large screens) Likewise if the person size were a function of screen
      * width/height. A combination of techniques makes for a better appearance
      * across screen sizes. */
     width: calc(0.5rem + 1vmin);
@@ -22,14 +22,14 @@ body
     padding: 0.25em;
     cursor: pointer;
 
-    & > img.unlit-match
+    & > img.person-vulnerable
     {
         position: relative;
         width: 100%;
         height: auto;
     }
 
-    & > img.spent-match
+    & > img.person-immune
     {
         position: relative;
         width: 100%;
@@ -49,12 +49,12 @@ body
         opacity: 0;
     }
 
-    &.spent > img.spent-match
+    &.spent > img.person-immune
     {
         display: inline-block;
     }
 
-    &.spent > img.unlit-match
+    &.spent > img.person-vulnerable
     {
         display: none;
     }
