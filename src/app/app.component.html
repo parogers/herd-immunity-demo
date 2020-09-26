@@ -14,7 +14,15 @@
 
         <div>
             <label for="people">% Immune <span class="immunity">({{ percentImmunity }})</span></label>
-            <input #percentImmunityInput name="immunity" type="range" min="0" max="100" (change)="handlePercentImmunityChange($event.target.value)">
+            <input
+                #percentImmunityInput
+                name="immunity"
+                type="range"
+                min="0"
+                max="100"
+                (change)="handlePercentImmunityChange($event.target.value)"
+                (input)="handlePercentImmunityChanging($event.target.value)"
+            >
         </div>
 
         <div>
