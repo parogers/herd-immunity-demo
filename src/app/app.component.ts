@@ -372,10 +372,19 @@ export class AppComponent
         });
     }
 
+    /* Called while the immunity value is changing (ie user is scrubbing the slider
+     * back and forth) This callback only updates the reported immunity. */
+    handlePercentImmunityChanging(value)
+    {
+        this.percentImmunity = value;
+    }
+
+    /* Called when the user has finished moving the slider and released the mouse
+     * button. This callback randomly assigns person immunity based on the
+     * chosen percentage. */
     handlePercentImmunityChange(value)
     {
         this.percentImmunity = value;
-
         this.numPeopleImmune = 0;
         let immune = 0;
         this.people.forEach((person, index) => {
