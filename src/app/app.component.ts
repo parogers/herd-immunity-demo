@@ -25,7 +25,7 @@ const DEFAULT_PERCENT_IMMUNITY = 25;
 // This is intentionally set low just to prevent tight clustering/overlapping
 // of people. Setting it too high will make the people look artificially
 // spaced out and not random.
-const MIN_PERSON_DIST = 0.02;
+const MIN_PERSON_DIST = 0.05;
 
 
 function createPersonElement() : HTMLElement
@@ -77,7 +77,7 @@ function createRandomPersonPosition(
         // so that people don't get cut off if near the margins.
         return {
             x: uniform(0, 0.95),
-            y: uniform(0, 0.86),
+            y: uniform(0, 0.90),
         };
     }
 
