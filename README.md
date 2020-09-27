@@ -6,6 +6,10 @@ The app renders a number of individuals, some with immunity to a disease, and ot
 
 The user can control the number of individuals, the percent immune, and the transmission distance of the disease.
 
+## Demo
+
+Checkout the online demo [here](https://herd.writtenwordinteractive.com/).
+
 ## Screenshots
 
 ![App screenshot](./docs/screenshots/pic1.png)
