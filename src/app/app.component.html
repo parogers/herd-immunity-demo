@@ -30,11 +30,6 @@
             <input #numPeopleInput name="people" type="range" min="1" max="{{ maxNumPeople }}" (input)="handleNumPeopleChange($event)">
         </div>
 
-        <div>
-            <label for="ignition">Transmission ({{ sicknessRadius }})</label>
-            <input #sicknessRadiusInput name="ignition" type="range" min="0" max="50" (input)="handleSicknessRadiusChange($event)">
-        </div>
-
         <div class="buttons">
             <button (click)="handleReset()">
                 Reset
