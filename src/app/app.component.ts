@@ -187,9 +187,6 @@ export class AppComponent
     @ViewChild('numPeopleInput', { static: true})
     private numPeopleInput;
 
-    @ViewChild('sicknessRadiusInput', { static: true })
-    private sicknessRadiusInput;
-
     @ViewChild('percentImmunityInput', { static: true })
     private percentImmunityInput;
 
@@ -218,7 +215,6 @@ export class AppComponent
             this.cachedPeople.push(person);
         }
 
-        this.sicknessRadiusInput.nativeElement.value = this.sicknessRadius;
         this.percentImmunityInput.nativeElement.value = this.percentImmunity;
 
         this.handleRandomize();
@@ -317,12 +313,6 @@ export class AppComponent
     handleNumPeopleChange(event)
     {
         this.numPeopleShown = event.target.value;
-        this.handleReset();
-    }
-
-    handleSicknessRadiusChange(event)
-    {
-        this.sicknessRadius = event.target.value;
         this.handleReset();
     }
 
