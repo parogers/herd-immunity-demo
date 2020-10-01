@@ -1,9 +1,26 @@
 <div class="info" [class.visible]="visible" (click)="handleClose()">
-    <div>
+    <div (click)="handleClickContent($event)">
         <button (click)="handleClose()">
             &#10799;
         </button>
 
-        <p>Content here that explains herd immunity</p>
+        <h1>About this App</h1>
+
+        <p>This app visually demonstrates how the prevelance of immunity in a population can help slow or prevent the widespread transmission of a disease amoung vulnerable individuals.</p>
+
+        <p>A slider allows you to control the percentage of the population immune to the disease, while another slider controls the number of individuals. Adding more individual increases their density and contact with others, thus increasing potential risk of transmission.</p>
+
+        <p>On the other hand, increasing the number of individuals immune to the disease helps reduce transmission.</p>
+
+        <h2>Herd Immunity</h2>
+
+        <p>Herd immunity describes this protective relationship between the portion of a population immune to a disease and the reduced risk of transmission of a disease amoung susceptible individuals. <a href="#footnotes">(1)</a></p>
+
+        <hr>
+
+        <ul id="footnotes">
+            <li>1. Paul Fine, Ken Eames, and David L. Heymann, "Herd Immunity": A Rough Guide, Clinical Infectious Diseases 2011; 52(7): 911–916</li>
+        </ul>
+
     </div>
 </div>

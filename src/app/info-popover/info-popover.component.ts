@@ -36,6 +36,12 @@ export class InfoPopoverComponent implements OnInit
         this.visible = true;
     }
 
+    handleClickContent(event)
+    {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
     handleClose() {
         this.visible = false;
     }

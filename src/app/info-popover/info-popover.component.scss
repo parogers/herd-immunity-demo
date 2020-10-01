@@ -44,6 +44,8 @@
             position: relative;
             display: none;
 
+            overflow-y: scroll;
+
             button
             {
                 position: absolute;
@@ -53,6 +55,12 @@
                 background: none;
                 font-size: 1.5em;
                 cursor: pointer;
+            }
+
+            hr
+            {
+                margin-top: 2em;
+                color: lightgray;
             }
         }
 
