@@ -20,10 +20,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import { InfoPopoverComponent } from './info-popover/info-popover.component';
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        InfoPopoverComponent
     ],
     imports: [
         BrowserModule

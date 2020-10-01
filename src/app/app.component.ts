@@ -197,6 +197,8 @@ export class AppComponent
     numPeopleSick : number = 0;
     numPeopleImmune : number = 0;
 
+    showInfoBox : boolean = false;
+
     ngOnInit()
     {
         window.addEventListener(
@@ -387,5 +389,15 @@ export class AppComponent
             }
         });
         this.handleReset();
+    }
+
+    handleInfo()
+    {
+        this.showInfoBox = true;
+    }
+
+    handleCloseInfoBox()
+    {
+        this.showInfoBox = false;
     }
 }

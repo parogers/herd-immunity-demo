@@ -38,6 +38,19 @@
                 Randomize
             </button>
         </div>
+        <button (click)="handleInfo()">
+            What is herd immunity?
+        </button>
+    </div>
+
+    <div class="info" [class.visible]="showInfoBox">
+        <div>
+            <button (click)="handleCloseInfoBox()">
+                &#10799;
+            </button>
+
+            <p>Content here that explains herd immunity</p>
+        </div>
     </div>
 
 </div>

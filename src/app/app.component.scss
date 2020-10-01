@@ -116,3 +116,53 @@
         }
     }
 }
+
+.info
+{
+    position: absolute;
+    width: 100%;
+    height: 0;
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 500ms, height 0ms 500ms;
+
+    div
+    {
+        margin-top: 10%;
+        width: 50%;
+        height: 50%;
+        padding: 1em;
+        margin-left: auto;
+        margin-right: auto;
+        background: white;
+        position: relative;
+        opacity: 0;
+        transition: opacity 0ms 500ms;
+
+        button
+        {
+            position: absolute;
+            right: 1em;
+            border: none;
+            text-decoration: none;
+            background: none;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+    }
+
+
+    &.visible
+    {
+        height: 100%;
+        opacity: 1;
+        display: block;
+        transition: opacity 250ms;
+
+        div {
+            opacity: 1;
+            transition: opacity 250ms 400ms;
+        }
+    }
+}
