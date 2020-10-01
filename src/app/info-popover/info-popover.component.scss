@@ -32,29 +32,48 @@
         opacity: 0;
         transition: opacity 500ms, height 0ms 500ms;
 
-        div
+        & > div
         {
-            margin-top: 10%;
-            width: 50%;
-            height: 50%;
+            margin-top: 10vh;
+            width: calc(100vw - 3em);
+            height: 50vh;
+            max-width: 40em;
+
             padding: 1.5em;
             margin-left: auto;
             margin-right: auto;
             background: white;
-            position: relative;
             display: none;
 
             overflow-y: scroll;
 
+            /*
+             * The spacer is a hack to get the close button into the right position.
+             * There's an issue with this CSS where, although the button is a child
+             * of the content div, top/left/right/bottom are taken relative to the
+             * window rather than it's parent.
+             */
+            .spacer {
+                display: inline-block;
+                width: calc(100% - 2em);
+                height: 0;
+            }
+
             button
             {
-                position: absolute;
-                right: 1em;
+                position: fixed;
                 border: none;
                 text-decoration: none;
-                background: none;
-                font-size: 1.5em;
+                background: #eee;
+                box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+                border-radius: 100%;
+                font-size: 1.75em;
                 cursor: pointer;
+            }
+
+            h1 {
+                padding-top: 0;
+                margin-top: 0;
             }
 
             hr

@@ -1,8 +1,12 @@
 <div class="info" [class.visible]="visible" (click)="handleClose()">
     <div (click)="handleClickContent($event)">
-        <button (click)="handleClose()">
-            &#10799;
-        </button>
+        <div>
+            <div class="spacer">
+            </div>
+            <button (click)="handleClose()">
+                &#10799;
+            </button>
+        </div>
 
         <h1>About this App</h1>
 
