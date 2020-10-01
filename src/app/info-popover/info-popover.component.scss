@@ -1,0 +1,71 @@
+/*
+ * Herd Immunity Demo - visually demonstrates the concept of herd immunity
+ * Copyright (C) 2020  Peter Rogers (peter.rogers@gmail.com)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+:host
+{
+    position: absolute;
+    width: 0;
+    height: 0;
+
+    .info
+    {
+        position: absolute;
+        width: 100vw;
+        height: 0;
+        z-index: 10000;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        transition: opacity 500ms, height 0ms 500ms;
+
+        div
+        {
+            margin-top: 10%;
+            width: 50%;
+            height: 50%;
+            padding: 1.5em;
+            margin-left: auto;
+            margin-right: auto;
+            background: white;
+            position: relative;
+            display: none;
+
+            button
+            {
+                position: absolute;
+                right: 1em;
+                border: none;
+                text-decoration: none;
+                background: none;
+                font-size: 1.5em;
+                cursor: pointer;
+            }
+        }
+
+        &.visible
+        {
+            height: 100vh;
+            opacity: 1;
+            display: block;
+            transition: opacity 250ms;
+
+            div {
+                display: block;
+            }
+        }
+    }
+}

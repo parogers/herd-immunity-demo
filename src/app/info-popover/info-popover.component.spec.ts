@@ -16,22 +16,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AppComponent } from './app.component';
+import { InfoPopoverComponent } from './info-popover.component';
 
-import { InfoPopoverComponent } from './info-popover/info-popover.component';
+describe('InfoPopoverComponent', () => {
+    let component: InfoPopoverComponent;
+    let fixture: ComponentFixture<InfoPopoverComponent>;
 
-@NgModule({
-    declarations: [
-        AppComponent,
-        InfoPopoverComponent
-    ],
-    imports: [
-        BrowserModule
-    ],
-    providers: [],
-    bootstrap: [AppComponent]
-})
-export class AppModule { }
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [ InfoPopoverComponent ]
+        })
+        .compileComponents();
+    });
+
+    beforeEach(() => {
+        fixture = TestBed.createComponent(InfoPopoverComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
+
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
+});

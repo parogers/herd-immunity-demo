@@ -16,22 +16,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { AppComponent } from './app.component';
-
-import { InfoPopoverComponent } from './info-popover/info-popover.component';
-
-@NgModule({
-    declarations: [
-        AppComponent,
-        InfoPopoverComponent
-    ],
-    imports: [
-        BrowserModule
-    ],
-    providers: [],
-    bootstrap: [AppComponent]
+@Component({
+    selector: 'app-info-popover',
+    templateUrl: './info-popover.component.html',
+    styleUrls: ['./info-popover.component.scss']
 })
-export class AppModule { }
+export class InfoPopoverComponent implements OnInit
+{
+    visible : boolean = false;
+
+    constructor() { }
+
+    ngOnInit(): void {
+    }
+
+    show() {
+        this.visible = true;
+    }
+
+    handleClose() {
+        this.visible = false;
+    }
+
+}
