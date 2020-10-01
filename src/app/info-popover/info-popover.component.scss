@@ -22,7 +22,7 @@
     width: 0;
     height: 0;
 
-    .info
+    .backdrop
     {
         position: absolute;
         width: 100vw;
@@ -32,12 +32,12 @@
         opacity: 0;
         transition: opacity 500ms, height 0ms 500ms;
 
-        & > div
+        .content
         {
             margin-top: 10vh;
             width: calc(100vw - 3em);
-            height: 50vh;
-            max-width: 40em;
+            height: 75vh;
+            max-width: 40rem;
 
             padding: 1.5em;
             margin-left: auto;
@@ -45,7 +45,16 @@
             background: white;
             display: none;
 
-            overflow-y: scroll;
+            overflow-y: auto;
+
+            @media only screen and (max-width: 45rem)
+            {
+                margin-top: 0;
+                height: 100vh;
+                /* We need overflow: unset here otherwise we end up with double
+                 * scrollbars. */
+                overflow: unset;
+            }
 
             /*
              * The spacer is a hack to get the close button into the right position.
