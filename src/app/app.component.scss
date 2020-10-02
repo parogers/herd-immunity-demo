@@ -95,19 +95,18 @@
 
     .buttons
     {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.3em;
-
         button
         {
-            flex-grow: 1;
-            flex-shrink: 1;
-            flex-basis: 0;
-            margin-bottom: 0.5em;
+            margin-top: 0.5em;
             padding-bottom: 0.25em;
             padding-left: 0;
             padding-right: 0;
+            display: block;
+            width: 100%;
+
+            &:last-child {
+                margin-top: 1.5em;
+            }
 
             @media only screen and (orientation: portrait)
             {
