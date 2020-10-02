@@ -18,6 +18,8 @@
 
 import { Component, EventEmitter, ViewChild } from '@angular/core';
 
+import { InfoPopoverComponent } from './info-popover/info-popover.component';
+
 
 const DEFAULT_NUM_PEOPLE = 50;
 const DEFAULT_SICKNESS_RADIUS = 10;
@@ -189,6 +191,9 @@ export class AppComponent
 
     @ViewChild('percentImmunityInput', { static: true })
     private percentImmunityInput;
+
+    @ViewChild(InfoPopoverComponent, { static: true })
+    private infoPopover;
 
     cachedPeople : Person[];
     people : Person[] = [];
@@ -387,5 +392,10 @@ export class AppComponent
             }
         });
         this.handleReset();
+    }
+
+    handleInfo()
+    {
+        this.infoPopover.show();
     }
 }
