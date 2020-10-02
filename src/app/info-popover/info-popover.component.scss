@@ -35,7 +35,7 @@
         .content
         {
             margin-top: 10vh;
-            width: calc(100vw - 3em);
+            width: 100vw;
             height: 75vh;
             max-width: 40rem;
 
@@ -44,13 +44,16 @@
             margin-right: auto;
             background: white;
             display: none;
+            box-sizing: border-box;
 
             overflow-y: auto;
 
-            @media only screen and (max-width: 45rem)
+            @media only screen and (max-width: 44rem)
             {
                 margin-top: 0;
+                width: 100vw;
                 height: 100vh;
+                max-width: unset;
                 /* We need overflow: unset here otherwise we end up with double
                  * scrollbars. */
                 overflow: unset;
