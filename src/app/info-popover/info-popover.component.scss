@@ -93,6 +93,68 @@
                 margin-top: 2em;
                 color: lightgray;
             }
+
+            .person {
+                width: 2em;
+                height: auto;
+            }
+
+            .person-diagram
+            {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                div
+                {
+                    position: relative;
+                }
+
+                .arrow
+                {
+                    width: 2em;
+                    height: auto;
+                    padding: 0.5em;
+                }
+
+                .person
+                {
+                    padding-left: 0.1em;
+                    padding-right: 0.1em;
+                }
+
+                .person.selected
+                {
+                    border: solid 1px lightgray;
+                    border-radius: 100%;
+                }
+            }
+
+            caption
+            {
+                display: block;
+                padding-left: 1em;
+                padding-right: 1em;
+
+                text-align: unset;
+                font-style: italic;
+                margin-top: 0.5em;
+                margin-bottom: 0.5em;
+            }
+
+            .legend
+            {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                figure {
+                    text-align: center;
+                    font-style: italic;
+                    margin: 1em;
+                }
+            }
+
         }
 
         &.visible

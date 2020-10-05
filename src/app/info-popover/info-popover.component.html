@@ -10,15 +10,62 @@
 
         <h1>About this App</h1>
 
-        <p>This app visually demonstrates how the prevelance of immunity in a population can help slow or prevent the widespread transmission of a disease amoung vulnerable individuals.</p>
-
-        <p>A slider allows you to control the percentage of the population immune to the disease, while another slider controls the number of individuals. Adding more individual increases their density and contact with others, thus increasing potential risk of transmission.</p>
-
-        <p>On the other hand, increasing the number of individuals immune to the disease helps reduce transmission.</p>
+        <p>This app visually demonstrates how the prevelance of immunity in a population can help slow or prevent the widespread transmission of a disease amoung vulnerable individuals. It was developed to help explore the idea of <em>herd immunity</em> in an interactive setting.</p>
 
         <h2>Herd Immunity</h2>
 
         <p>Herd immunity describes this protective relationship between the portion of a population immune to a disease and the reduced risk of transmission of a disease amoung susceptible individuals. <a href="#footnotes">(1)</a></p>
+
+        <p>This app attempts to demonstrate herd immunity in action by using an interactive visualization.</p>
+
+        <h2>How to use this app</h2>
+
+        <p>In this very simple model a person can be in one of three states:</p>
+
+        <div class="legend">
+            <figure>
+                <img class="person" src="assets/tutorial/person-vulnerable.svg">
+                <figcaption>Vulnerable</figcaption>
+            </figure>
+
+            <figure>
+                <img class="person" src="assets/tutorial/person-sick.svg">
+                <figcaption>Sick</figcaption>
+            </figure>
+
+            <figure>
+                <img class="person" src="assets/tutorial/person-immune.svg">
+                <figcaption>Immune</figcaption>
+            </figure>
+        </div>
+
+        <p>A person who is vulnerable may become sick if they are in proximity to another sick individual. A person who is immune always remains immune and never becomes sick or vulnerable.</p>
+
+        <p>Initially there are a number of vulnerable and immune individuals but nobody sick. At any time, you may click on a vulernable individual to cause them to become sick. They in turn will spread the disease to vulnerable individuals nearby, who in turn may spread it further, and so on.</p>
+
+        <div class="person-diagram">
+            <img class="person selected" src="assets/tutorial/person-vulnerable.svg">
+            <img class="person" src="assets/tutorial/person-vulnerable.svg">
+            <img class="person" src="assets/tutorial/person-vulnerable.svg">
+            <img class="person" src="assets/tutorial/person-immune.svg">
+            <img class="person" src="assets/tutorial/person-vulnerable.svg">
+            <img class="arrow" src="assets/tutorial/arrow.svg">
+            <img class="person" src="assets/tutorial/person-sick.svg">
+            <img class="person" src="assets/tutorial/person-sick.svg">
+            <img class="person" src="assets/tutorial/person-sick.svg">
+            <img class="person" src="assets/tutorial/person-immune.svg">
+            <img class="person" src="assets/tutorial/person-vulnerable.svg">
+        </div>
+
+        <caption>
+            An example showing how vulnerable persons can pass sickness to other nearby vulnerable individuals, but not to those immune.
+        </caption>
+
+        <p>In the example above, clicking on the left-most individual causes the sickness to spread to other vulnerable persons. However the chain of transmission stops at the immune individual, who thereby provides a protective buffer to the right-most vulnerable individual.</p>
+
+        <p>A slider allows you to control the percentage of the population immune to the disease, while another slider controls the number of individuals. Adding more individual increases their density and contact with others, thus increasing potential risk of transmission.</p>
+
+        <p>On the other hand, increasing the number of individuals immune to the disease helps reduce transmission.</p>
 
         <hr>
 
