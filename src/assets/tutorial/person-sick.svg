@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:version="0.92.5 (0.92.5+68)"
+   sodipodi:docname="person-sick.svg"
+   width="135mm"
+   height="200mm"
+   viewBox="0 0 135 200"
+   version="1.1"
+   id="svg8">
+  <sodipodi:namedview
+     inkscape:current-layer="svg8"
+     inkscape:window-maximized="1"
+     inkscape:window-y="0"
+     inkscape:window-x="0"
+     inkscape:cy="446.01823"
+     inkscape:cx="358.85573"
+     inkscape:zoom="0.65806405"
+     showgrid="false"
+     id="namedview841"
+     inkscape:window-height="843"
+     inkscape:window-width="1600"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     inkscape:document-rotation="0"
+     inkscape:snap-global="true"
+     inkscape:snap-bbox="true"
+     inkscape:snap-bbox-midpoints="true" />
+  <defs
+     id="defs2" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     sodipodi:nodetypes="zzzzzzzzzzzzzzzzzzzzz"
+     d="M 67.83091,1.1560338 C 74.737398,1.046907 79.80413,8.762815 86.443428,12.10028 c 6.639293,3.337463 14.994142,-1.67329 20.644592,4.643501 5.65045,6.316792 5.29771,20.262438 9.39664,29.006741 4.09893,8.744301 12.75046,12.559487 14.86564,22.769333 2.11518,10.209847 -3.4649,20.665849 -3.48336,31.483165 -0.0185,10.81732 5.7204,22.03925 3.48336,32.51557 -2.23705,10.47632 -11.35816,14.27433 -15.445,23.07086 -4.08686,8.79651 -3.10122,22.26993 -8.81728,28.70522 -5.71605,6.43527 -15.045517,0.95001 -21.693712,4.38935 -6.648173,3.43933 -10.616319,10.24355 -17.563402,10.27362 -6.947083,0.0301 -12.101298,-7.81288 -18.785152,-11.13013 -6.683856,-3.31725 -14.58701,2.9014 -20.472034,-3.53285 -5.885025,-6.43425 -5.701104,-22.82089 -9.900266,-31.51287 C 14.474293,144.08979 6.4036065,142.39731 4.3114461,132.51859 2.2192887,122.63988 8.3910532,111.74454 8.405739,100.87021 8.4204206,89.995906 2.1635871,79.103885 4.3114471,68.519849 6.459307,57.935813 15.835289,54.000253 19.911882,45.18908 23.988477,36.377903 22.947402,23.135858 28.573722,16.743779 34.200043,10.351699 43.29538,15.647372 49.939696,12.242566 56.584011,8.8377609 60.92442,1.2651664 67.83091,1.1560338 Z"
+     inkscape:transform-center-y="-9.8883518"
+     style="fill:#7ac100;fill-opacity:0.99607801;fill-rule:evenodd;stroke-width:2.88109922"
+     id="path2445"
+     inkscape:connector-curvature="0"
+     inkscape:transform-center-x="1.0823765e-06" />
+  <path
+     inkscape:connector-curvature="0"
+     id="path951"
+     style="fill:#af2b00;fill-opacity:0.99607801;fill-rule:evenodd;stroke-width:3.5031302"
+     d="M 67.327162,23.99265 A 18.560991,18.560991 0 0 0 48.766334,42.553481 18.560991,18.560991 0 0 0 58.93734,59.110133 v 1.245283 H 44.947304 c -4.864874,0 -8.78155,3.916675 -8.78155,8.781551 v 35.978163 c 0,4.86487 3.916676,8.78154 8.78155,8.78154 h 5.818059 v 50.68315 c 0,3.86671 3.11305,6.97937 6.979768,6.97937 h 20.24061 c 3.866712,0 6.979759,-3.11266 6.979759,-6.97937 v -50.68315 h 5.81804 c 4.864853,0 8.781119,-3.91667 8.781119,-8.78154 V 69.136967 c 0,-4.864876 -3.916266,-8.781551 -8.781119,-8.781551 H 76.793545 V 58.519177 A 18.560991,18.560991 0 0 0 85.888367,42.553481 18.560991,18.560991 0 0 0 67.327162,23.99265 Z" />
+</svg>

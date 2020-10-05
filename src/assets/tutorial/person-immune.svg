@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:version="0.92.5 (0.92.5+68)"
+   sodipodi:docname="person-immune.svg"
+   width="135mm"
+   height="200mm"
+   viewBox="0 0 135 200"
+   version="1.1"
+   id="svg8">
+  <sodipodi:namedview
+     inkscape:current-layer="svg8"
+     inkscape:window-maximized="1"
+     inkscape:window-y="0"
+     inkscape:window-x="0"
+     inkscape:cy="315.33186"
+     inkscape:cx="126.35556"
+     inkscape:zoom="0.65806405"
+     showgrid="false"
+     id="namedview841"
+     inkscape:window-height="843"
+     inkscape:window-width="1600"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     inkscape:document-rotation="0"
+     inkscape:snap-global="true"
+     inkscape:snap-bbox="true"
+     inkscape:snap-bbox-midpoints="true" />
+  <defs
+     id="defs2" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     inkscape:connector-curvature="0"
+     d="M 67.266514,15.681031 A 20.651869,20.651869 0 0 0 46.614825,36.332723 20.651869,20.651869 0 0 0 57.931586,54.754467 V 56.14003 H 42.365583 c -5.412898,0 -9.770784,4.357885 -9.770784,9.770785 v 40.031075 c 0,5.4129 4.357886,9.77078 9.770784,9.77078 h 6.47346 v 56.39255 c 0,4.3023 3.463734,7.7656 7.766034,7.7656 H 79.12578 c 4.3023,0 7.766034,-3.4633 7.766034,-7.7656 v -56.39255 h 6.473456 c 5.412894,0 9.77035,-4.35788 9.77035,-9.77078 V 65.910815 c 0,-5.4129 -4.357456,-9.770785 -9.77035,-9.770785 H 77.799271 V 54.09694 A 20.651869,20.651869 0 0 0 87.918647,36.332723 20.651869,20.651869 0 0 0 67.266514,15.681031 Z"
+     style="fill:#1092ff;fill-opacity:0.99607801;fill-rule:evenodd;stroke-width:3.89775467"
+     id="path951" />
+</svg>

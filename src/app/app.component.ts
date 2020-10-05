@@ -232,6 +232,7 @@ export class AppComponent
          * code doesn't catch that. */
         setTimeout(() => {
             this.placePersonElements();
+            this.infoPopover.show();
         }, 100);
     }
 
