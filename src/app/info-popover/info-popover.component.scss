@@ -40,6 +40,7 @@
             max-width: 40rem;
 
             padding: 1.5em;
+            padding-top: 1em;
             margin-left: auto;
             margin-right: auto;
             background: white;
@@ -69,6 +70,7 @@
                 display: inline-block;
                 width: calc(100% - 2em);
                 height: 0;
+                margin-bottom: 1.75em;
             }
 
             button
@@ -80,6 +82,8 @@
                 box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
                 border-radius: 100%;
                 font-size: 1.75em;
+                width: 1.5em;
+                height: 1.5em;
                 cursor: pointer;
             }
 
@@ -104,11 +108,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-
-                div
-                {
-                    position: relative;
-                }
+                flex-wrap: wrap;
 
                 .arrow
                 {
